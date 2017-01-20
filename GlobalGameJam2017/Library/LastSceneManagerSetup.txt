@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/EdwinChen.unity
+- path: Assets/AidanDearing_vomit.unity
   isLoaded: 1
   isActive: 1
