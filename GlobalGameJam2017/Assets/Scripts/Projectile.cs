@@ -4,34 +4,44 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-#region // Variables
-    public Rigidbody2D rb2D;
+#region Variables
+    Rigidbody rb;
+    public bool isLocalOrientation;
 
-    public float amplitude;
-    public float cycle;
-
-    public float Xspeed;
-    public float Yspeed;
-    public float deathTime;
-    public float frequency;
+    public float deathTime = 2.0f;
+    public float amplitude = 1.0f;
+    public float speed = 0.5f;
+    public float frequency = 50.0f;
 #endregion
 
     // Use this for initialization
-    void Start ()
+    private void Start ()
     {
-        rb2D = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody>();
+        speed *= 0.5f;
         Destroy(gameObject, deathTime);
-	}
+    }
 	
-	// Update is called once per frame
-	void Update ()
-    {
-		
-	}
 
-    void SineWaveTranformation()
+    // Physics update
+    private void FixedUpdate()
     {
+        if (isLocalOrientation)
+        {
+            rb.MovePosition(rb.transform.position += rb.transform.TransformVector(new Vector3(speed, 0.0f, amplitude * Mathf.Sin(frequency * Time.time))));
+        }
+        else
+        {
+            rb.MovePosition(rb.transform.position += new Vector3(speed, 0.0f, amplitude * Mathf.Sin(frequency * Time.time)) );
+        }
+    }
 
+
+    // Rigidbody collision detection
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Collision");
+        Destroy(gameObject);
     }
 
 } // end class Projectile
