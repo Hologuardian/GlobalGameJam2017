@@ -5,8 +5,8 @@ using System.Collections;
 public class TopDownController : MonoBehaviour
 {
     [SerializeField]
-    private float _playerID;
-    public float PlayerID { get { return _playerID; } set { _playerID = value; } }
+    private int _playerID;
+    public int PlayerID { get { return _playerID; } set { _playerID = value; } }
 
     [SerializeField]
     private float _health;
@@ -46,6 +46,37 @@ public class TopDownController : MonoBehaviour
     protected void Start()
     {
         isOnGround = true;
+
+        switch (PlayerID) {
+            case 1:
+                PlayerInputA = KeyCode.Joystick1Button0;
+                PlayerInputX = KeyCode.Joystick1Button2;
+                PlayerInputY = KeyCode.Joystick1Button3;
+                PlayerInputB = KeyCode.Joystick1Button1;
+                PlayerInputL3 = KeyCode.Joystick1Button8;
+                break;
+            case 2:
+                PlayerInputA = KeyCode.Joystick2Button0;
+                PlayerInputX = KeyCode.Joystick2Button2;
+                PlayerInputY = KeyCode.Joystick2Button3;
+                PlayerInputB = KeyCode.Joystick2Button1;
+                PlayerInputL3 = KeyCode.Joystick2Button8;
+                break;
+            case 3:
+                PlayerInputA = KeyCode.Joystick3Button0;
+                PlayerInputX = KeyCode.Joystick3Button2;
+                PlayerInputY = KeyCode.Joystick3Button3;
+                PlayerInputB = KeyCode.Joystick3Button1;
+                PlayerInputL3 = KeyCode.Joystick3Button8;
+                break;
+            case 4:
+                PlayerInputA = KeyCode.Joystick4Button0;
+                PlayerInputX = KeyCode.Joystick4Button2;
+                PlayerInputY = KeyCode.Joystick4Button3;
+                PlayerInputB = KeyCode.Joystick4Button1;
+                PlayerInputL3 = KeyCode.Joystick4Button8;
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -62,39 +93,32 @@ public class TopDownController : MonoBehaviour
             Vector3 moveGoal = Vector3.zero;
 
             // If moving forward or backward, add only the forward backward component (z)
+            /*
             if (Input.GetKey(KeyCode.W))
                 moveGoal.z = Movement.z;
  
             else if (Input.GetKey(KeyCode.S))
                 moveGoal.z = -Movement.z;
-
-            // If moving sideways, add only the sideways component (x)
             if (Input.GetKey(KeyCode.A))
                 moveGoal.x = -Movement.x;
             else if (Input.GetKey(KeyCode.D))
                 moveGoal.x = Movement.x;
-            if (Input.GetAxis("L Horizontal Controller") != 0 ){
-                moveGoal.x = Input.GetAxis("L Horizontal Controller");
+            */
+
+            if (Input.GetAxis("L Horizontal Controller " + PlayerID) != 0 ){
+                moveGoal.x = Input.GetAxis("L Horizontal Controller " + PlayerID);
+                print(moveGoal.x);
             }
-            if (Input.GetAxis("L Vertical Controller") != 0)
+            if (Input.GetAxis("L Vertical Controller " + PlayerID) != 0)
             {
-                moveGoal.z = Input.GetAxis("L Vertical Controller");
+                moveGoal.z = Input.GetAxis("L Vertical Controller " + PlayerID);
             }
-            /*
-            if (Input.GetAxis("R Horizontal Controller") != 0)
-            {
-                moveGoal.x = Input.GetAxis("R Horizontal Controller");
-            }
-            if (Input.GetAxis("R Vertical Controller") != 0)
-            {
-                moveGoal.z = Input.GetAxis("R Vertical Controller");
-            }*/
             Vector3 Pos = transform.position;
-            Pos.z += Input.GetAxis("R Vertical Controller");
-            Pos.x += Input.GetAxis("R Horizontal Controller");
+            Pos.z += Input.GetAxis("R Vertical Controller " + PlayerID);
+            Pos.x += Input.GetAxis("R Horizontal Controller " + PlayerID);
             Debug.DrawLine(transform.position,  Pos);
-
-
+            //transform.Rotate(new Vector3(0,Mathf.Atan2(Pos.z, Pos.x),0));
+            transform.rotation = Quaternion.LookRotation(Pos);
             // Normalize it
             moveGoal.Normalize();
 
@@ -104,14 +128,14 @@ public class TopDownController : MonoBehaviour
             // multiplier against the secondary axis (x) magnitude, you establish a move vector that is limited to a maximum magnitude of the leading axis.
             // Save I am ignoring y, because it is for jumping, which doesn't need any of this.
             moveGoal.z *= Movement.z;
-            moveGoal.x *= (1 - (moveGoal.y / Movement.y)) * Movement.x;
+            moveGoal.x *= (1 - (moveGoal.z / Movement.z)) * Movement.x;
 
             // If the z is negative the player is moving backwards, they should be backstepping, therefore they need to use the backstepMult
             if (moveGoal.z < 0)
                 moveGoal.z *= MovementBackstepMult;
 
             // Sprinting, if moving forward
-            if (Input.GetKey(KeyCode.LeftShift)|| Input.GetKey(KeyCode.JoystickButton8))
+            if (Input.GetKey(KeyCode.LeftShift)|| Input.GetKey(PlayerInputL3))
             {
                 if (moveGoal.z > 0)
                     moveGoal.z *= MovementSprintMult;
@@ -123,9 +147,8 @@ public class TopDownController : MonoBehaviour
 
         // Action logic
         // Shoot
-        if (Input.GetButton("Fire1")|| Input.GetKey(KeyCode.JoystickButton0))
+        if (Input.GetButton("Fire1")|| Input.GetKey(PlayerInputA))
         {
-            Input.
             print("A");
         }
     }
