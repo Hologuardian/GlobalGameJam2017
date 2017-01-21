@@ -5,7 +5,6 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
 #region Variables
-    Rigidbody rb;
     public bool isLocalOrientation;
 
     public float deathTime = 2.0f;
@@ -15,10 +14,7 @@ public class Projectile : MonoBehaviour
 #endregion
 
     // Use this for initialization
-    private void Start ()
-    {
-        rb = GetComponent<Rigidbody>();
-        speed *= 0.5f;
+    private void Start() {
         Destroy(gameObject, deathTime);
     }
 	
@@ -28,20 +24,20 @@ public class Projectile : MonoBehaviour
     {
         if (isLocalOrientation)
         {
-            rb.MovePosition(rb.transform.position += rb.transform.TransformVector(new Vector3(speed, 0.0f, amplitude * Mathf.Sin(frequency * Time.time))));
+            transform.position += transform.TransformVector(new Vector3(amplitude * Mathf.Cos(frequency * Time.time) * speed, 0.0f, amplitude * Mathf.Sin(frequency * Time.time) * speed));
         }
         else
         {
-            rb.MovePosition(rb.transform.position += new Vector3(speed, 0.0f, amplitude * Mathf.Sin(frequency * Time.time)) );
+            transform.position += new Vector3(amplitude * Mathf.Cos(frequency * Time.time) * speed, 0.0f, amplitude * Mathf.Sin(frequency * Time.time) * speed);
         }
     }
 
 
     // Rigidbody collision detection
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider cc)
     {
         Debug.Log("Collision");
-        Destroy(gameObject);
+        //Destroy(gameObject);
     }
 
 } // end class Projectile
