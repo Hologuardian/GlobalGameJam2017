@@ -64,19 +64,22 @@ public class TestGen : MonoBehaviour
                 float height = 0;
                 GameObject obj = Instantiate(prefabs[0]);
                 obj.transform.position = new Vector3(i * CellWidth, height, j * CellWidth);
+                obj.transform.rotation = Quaternion.AngleAxis(90 * Random.Range(0, 4), Vector3.up);
                 buildingMap[hash].Add(obj);
                 height += 3;
-                for (int n = 0; n < Random.Range(0, buildingHeight); n++)
+                for (int n = 0; n < buildingHeight; n++)
                 {
                     yield return new WaitForEndOfFrame();
                     obj = Instantiate(prefabs[1]);
                     obj.transform.position = new Vector3(i * CellWidth, height, j * CellWidth);
+                    obj.transform.rotation = Quaternion.AngleAxis(90 * Random.Range(0, 4), Vector3.up);
                     height += 3;
                     buildingMap[hash].Add(obj);
                 }
                 yield return new WaitForEndOfFrame();
                 obj = Instantiate(prefabs[2]);
                 obj.transform.position = new Vector3(i * CellWidth, height, j * CellWidth);
+                obj.transform.rotation = Quaternion.AngleAxis(90 * Random.Range(0, 4), Vector3.up);
                 buildingMap[hash].Add(obj);
             }
         }

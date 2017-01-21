@@ -25,6 +25,7 @@ public class TopDownController : MonoBehaviour
     public float MovementSprintMult { get { return _movementsprintmult; } set { _movementsprintmult = value; } }
 
     private Vector3 currentVelocity;
+    private Rigidbody body;
 
     // Jump variables
     public bool isOnGround;
@@ -41,6 +42,7 @@ public class TopDownController : MonoBehaviour
     // Use this for initialization
     protected void Start()
     {
+        body = GetComponent<Rigidbody>();
         isOnGround = true;
         HealthMax = 100;
         Health = HealthMax;
@@ -143,7 +145,7 @@ public class TopDownController : MonoBehaviour
             }
 
             // Then it is just a matter of using the beautiful SmoothDamp method (much like a spring, but unable to go past the goal) to figure out the best way of making the player move naturally
-            transform.position = Vector3.SmoothDamp(transform.position, transform.position + moveGoal, ref currentVelocity, 1);
+             body.MovePosition(Vector3.SmoothDamp(body.position, body.position + moveGoal, ref currentVelocity, 1));
         }
 
         // Action logic
