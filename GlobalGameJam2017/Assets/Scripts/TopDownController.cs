@@ -36,7 +36,7 @@ public class TopDownController : MonoBehaviour
     KeyCode PlayerInputB;
     KeyCode PlayerInputL3;
 
-    
+    public Instrument _Instrument;
 
     // Use this for initialization
     protected void Start()
@@ -148,20 +148,25 @@ public class TopDownController : MonoBehaviour
 
         // Action logic
         // Shoot
-        if (Input.GetKey(PlayerInputA))
-        {
-            print("A");
-        }
+        
         if (Input.GetKey(PlayerInputX))
         {
+            _Instrument.AggroLight();
             print("X");
         }
         if (Input.GetKey(PlayerInputY))
         {
+            _Instrument.AggroHeavy();
             print("Y");
+        }
+        if (Input.GetKey(PlayerInputA)||Input.GetKey(KeyCode.Space))
+        {
+            _Instrument.Utility();
+            print("A");
         }
         if (Input.GetKey(PlayerInputB))
         {
+            _Instrument.Defense();
             print("B");
         }
     }
