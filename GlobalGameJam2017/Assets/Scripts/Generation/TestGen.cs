@@ -78,9 +78,34 @@ public class TestGen : MonoBehaviour
             }
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+    void DestroyChunk(int i, int j)
+    {
+        long hash = i + j << 32;
+        foreach(GameObject obj in buildingMap[hash])
+        {
+            Destroy(obj);
+        }
+        buildingMap[hash].Clear();
+        buildingMap.Remove(hash);
+    }
+
+    void DestroyChunk(long hash)
+    {
+        foreach (GameObject obj in buildingMap[hash])
+        {
+            Destroy(obj);
+        }
+        buildingMap[hash].Clear();
+        buildingMap.Remove(hash);
+    }
+
+    // Update is called once per frame
+    void Update ()
+    {
+		foreach(long key in buildingMap.Keys)
+        {
+            DestroyChunk(key);
+        }
 	}
 }
