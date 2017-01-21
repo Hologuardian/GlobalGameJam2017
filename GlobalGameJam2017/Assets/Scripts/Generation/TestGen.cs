@@ -9,8 +9,8 @@ public class TestGen : MonoBehaviour
     public Dictionary<long, List<GameObject>> buildingMap;
 
     public const int CellWidth = 10;
-    public const int CityWidth = 15;
-    public const int CityHeight = 15;
+    public const int CityWidth = 7; //Will ciel to odd numbers.
+    public const int CityHeight = 5;
     public const int BlockWidth = 4;
     public static int citySeed;
     public static int citySeed2;
@@ -112,9 +112,9 @@ public class TestGen : MonoBehaviour
 
         List<long> toDestroy = new List<long>();
         List<long> hashCheck = new List<long>();
-        for (int i = playerX - 2 * BlockWidth; i <= playerX + 2 * BlockWidth; i++)
+        for (int i = playerX - CityWidth / 2; i <= playerX + CityWidth / 2; i++)
         {
-            for (int j = playerZ - 2 * BlockWidth; j <= playerZ + 2 * BlockWidth; j++)
+            for (int j = playerZ - CityWidth / 2; j <= playerZ + CityWidth / 2; j++)
             {
                 var hashy = Hash(i, j);
                 hashCheck.Add(hashy);
