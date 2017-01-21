@@ -23,12 +23,21 @@ public class TestGen : MonoBehaviour
         {
             for (int j = 0; j < CityHeight; j++)
             {
-                int streetVal = (i % BlockWidth == 0) || (j % BlockWidth) == 0 ? 0 : 1;
+                bool iRoad = i % BlockWidth == 0;
+                bool jRoad = j % BlockWidth == 0;
+                int streetVal = iRoad || jRoad ? 0 : 1;
 
                 int buildingPick = (((i + citySeed) / BlockWidth) ^ ((j + citySeed2) / BlockWidth));//Random.Range(0, BuildingPrefabs.Count);
                 buildingPick %= BuildingPrefabs.Count;
 
-                int roadPick = Random.Range(0, RoadPrefabs.Count);
+                int roadPick = 0;
+                if (iRoad && jRoad)
+                    roadPick = 2;
+                else if (iRoad)
+                    roadPick = 0;
+                else if (jRoad)
+                    roadPick = 1;
+
 
                 GameObject obj = Instantiate(streetVal == 0 ? RoadPrefabs[roadPick] : BuildingPrefabs[buildingPick]);
                 obj.transform.position = new Vector3(i * CellWidth, 0, j * CellWidth);
