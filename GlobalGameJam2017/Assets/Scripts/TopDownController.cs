@@ -14,7 +14,6 @@ public class TopDownController : MonoBehaviour
     [SerializeField]
     private float _healthmax;
     public float HealthMax { get { return _healthmax; } set { _healthmax = value; } }
-    private float healthRegenCurrent;
     [SerializeField]
     private Vector3 _movement;
     public Vector3 Movement { get { return _movement; } set { _movement = value; } }
@@ -25,27 +24,26 @@ public class TopDownController : MonoBehaviour
     private float _movementsprintmult;
     public float MovementSprintMult { get { return _movementsprintmult; } set { _movementsprintmult = value; } }
 
-    [SerializeField]
-    private Rigidbody rigidself;
-    [SerializeField]
-    private Transform aimNode;
-
     private Vector3 currentVelocity;
 
     // Jump variables
     public bool isOnGround;
     public bool isTouching;
 
-    public KeyCode PlayerInputA;
-    public KeyCode PlayerInputX;
-    public KeyCode PlayerInputY;
-    public KeyCode PlayerInputB;
-    public KeyCode PlayerInputL3;
+    KeyCode PlayerInputA;
+    KeyCode PlayerInputX;
+    KeyCode PlayerInputY;
+    KeyCode PlayerInputB;
+    KeyCode PlayerInputL3;
+
+    
 
     // Use this for initialization
     protected void Start()
     {
         isOnGround = true;
+        HealthMax = 100;
+        Health = HealthMax;
 
         switch (PlayerID) {
             case 1:
@@ -118,7 +116,7 @@ public class TopDownController : MonoBehaviour
             Pos.x += Input.GetAxis("R Horizontal Controller " + PlayerID);
             Debug.DrawLine(transform.position,  Pos);
 
-            transform.rotation = Quaternion.AngleAxis( (Mathf.Atan2(Pos.z-transform.position.z,Pos.x-transform.position.x)/3.14f)*-180, Vector3.up);
+            transform.rotation = Quaternion.AngleAxis( ((Mathf.Atan2(Pos.z-transform.position.z,Pos.x-transform.position.x)/Mathf.PI)*-180)+90, Vector3.up);
             //transform.Rotate(new Vector3(0,Mathf.Atan2(Pos.z, Pos.x),0));
             //transform.rotation = Quaternion.LookRotation(Pos);
             // Normalize it
@@ -150,9 +148,21 @@ public class TopDownController : MonoBehaviour
 
         // Action logic
         // Shoot
-        if (Input.GetButton("Fire1")|| Input.GetKey(PlayerInputA))
+        if (Input.GetKey(PlayerInputA))
         {
             print("A");
+        }
+        if (Input.GetKey(PlayerInputX))
+        {
+            print("X");
+        }
+        if (Input.GetKey(PlayerInputY))
+        {
+            print("Y");
+        }
+        if (Input.GetKey(PlayerInputB))
+        {
+            print("B");
         }
     }
 
