@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\Generation\Building.cs" />
+    <Compile Include="Assets\Scripts\Generation\DungeonGen.cs" />
     <Compile Include="Assets\Scripts\Generation\Sector.cs" />
     <Compile Include="Assets\Scripts\Generation\TestGen.cs" />
     <Compile Include="Assets\Scripts\Projectile.cs" />
