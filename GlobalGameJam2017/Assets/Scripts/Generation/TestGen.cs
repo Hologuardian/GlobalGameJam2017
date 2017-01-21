@@ -14,6 +14,7 @@ public class TestGen : MonoBehaviour
     public const int BlockWidth = 4;
     public static int citySeed;
     public static int citySeed2;
+    public GameObject player;
 
     // Use this for initialization
     void Start()
