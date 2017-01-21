@@ -34,7 +34,7 @@ public class TestGen : MonoBehaviour
     {
         long hash = i + (long)(j) * int.MaxValue;
         buildingMap[hash] = new List<GameObject>();
-        Debug.Log("Creating Hash" + hash + " for point " + i + " " + j);
+        //Debug.Log("Creating Hash " + hash + " for point " + i + " " + j);
         bool iRoad = i % BlockWidth == 0;
         bool jRoad = j % BlockWidth == 0;
         int streetVal = iRoad || jRoad ? 0 : 1;
