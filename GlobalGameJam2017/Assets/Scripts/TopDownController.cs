@@ -93,7 +93,7 @@ public class TopDownController : MonoBehaviour
             Vector3 moveGoal = Vector3.zero;
 
             // If moving forward or backward, add only the forward backward component (z)
-            /*
+            
             if (Input.GetKey(KeyCode.W))
                 moveGoal.z = Movement.z;
  
@@ -103,11 +103,11 @@ public class TopDownController : MonoBehaviour
                 moveGoal.x = -Movement.x;
             else if (Input.GetKey(KeyCode.D))
                 moveGoal.x = Movement.x;
-            */
+            moveGoal.Normalize();
 
             if (Input.GetAxis("L Horizontal Controller " + PlayerID) != 0 ){
                 moveGoal.x = Input.GetAxis("L Horizontal Controller " + PlayerID);
-                print(moveGoal.x);
+                
             }
             if (Input.GetAxis("L Vertical Controller " + PlayerID) != 0)
             {
@@ -131,7 +131,7 @@ public class TopDownController : MonoBehaviour
             // Save I am ignoring y, because it is for jumping, which doesn't need any of this.
             if (moveGoal.x > 0)
             {
-                print("moveGoal.x *= Movement.x " + moveGoal.x + "*=" + Movement.x);
+                //print("moveGoal.x *= Movement.x " + moveGoal.x + "*=" + Movement.x);
             }
             moveGoal.z *= Movement.z;
             
