@@ -24,7 +24,7 @@ public class TestGen : MonoBehaviour
         citySeed2 = Random.Range(0, 100000) * BlockWidth;
     }
 
-    void GenChunk(int i, int j)
+    IEnumerator GenChunk(int i, int j)
     {
         long hash = Hash(i, j);
         buildingMap[hash] = new List<GameObject>();
@@ -36,6 +36,7 @@ public class TestGen : MonoBehaviour
         int buildingPick = (((i + citySeed) / BlockWidth) ^ ((j + citySeed2) / BlockWidth));//Random.Range(0, BuildingPrefabs.Count);
         buildingPick = Mathf.Abs(buildingPick) % BuildingPrefabs.Count;
 
+        yield return new WaitForEndOfFrame();
         if (streetVal == 0)
         {
             int roadPick = 0;
@@ -49,6 +50,7 @@ public class TestGen : MonoBehaviour
             obj.transform.position = new Vector3(i * CellWidth, 0, j * CellWidth);
             buildingMap[hash].Add(obj);
         }
+        yield return new WaitForEndOfFrame();
         if (streetVal == 1)
         {
             var building = BuildingPrefabs[buildingPick].buildings[Random.Range(0, BuildingPrefabs[buildingPick].buildings.Count)];
@@ -58,44 +60,55 @@ public class TestGen : MonoBehaviour
             var buildingHeight = Random.Range(minHeight, maxHeight);
             if (prefabs.Count > 0)
             {
+                yield return new WaitForEndOfFrame();
                 float height = 0;
                 GameObject obj = Instantiate(prefabs[0]);
                 obj.transform.position = new Vector3(i * CellWidth, height, j * CellWidth);
                 buildingMap[hash].Add(obj);
-                height += obj.transform.lossyScale.y;
+                height += 3;
                 for (int n = 0; n < Random.Range(0, buildingHeight); n++)
                 {
+                    yield return new WaitForEndOfFrame();
                     obj = Instantiate(prefabs[1]);
                     obj.transform.position = new Vector3(i * CellWidth, height, j * CellWidth);
-                    height += obj.transform.lossyScale.y;
+                    height += 3;
                     buildingMap[hash].Add(obj);
                 }
+                yield return new WaitForEndOfFrame();
                 obj = Instantiate(prefabs[2]);
                 obj.transform.position = new Vector3(i * CellWidth, height, j * CellWidth);
                 buildingMap[hash].Add(obj);
             }
         }
+        yield break;
     }
 
-    void DestroyChunk(int i, int j)
+    IEnumerator DestroyChunk(int i, int j)
     {
+        yield return new WaitForEndOfFrame();
         long hash = Hash(i, j);
         foreach (GameObject obj in buildingMap[hash])
         {
             Destroy(obj);
+            //yield return new WaitForEndOfFrame();
         }
         buildingMap[hash].Clear();
         buildingMap.Remove(hash);
+        yield break;
     }
 
-    void DestroyChunk(long hash)
+    IEnumerator DestroyChunk(long hash)
     {
+        yield return new WaitForEndOfFrame();
         foreach (GameObject obj in buildingMap[hash])
         {
             Destroy(obj);
+            //yield return new WaitForEndOfFrame();
+
         }
         buildingMap[hash].Clear();
         buildingMap.Remove(hash);
+        yield break;
     }
 
     long Hash(int i, int j)
@@ -128,7 +141,7 @@ public class TestGen : MonoBehaviour
                 int x = (int)(localHash % int.MaxValue) - int.MaxValue / 2;
                 int z = (int)(localHash / int.MaxValue) - int.MaxValue / 2;
                 Debug.Log(x + " " + z + " " + localHash);
-                GenChunk(x, z);
+                StartCoroutine(GenChunk(x, z));
             }
         }
 
@@ -142,7 +155,7 @@ public class TestGen : MonoBehaviour
 
         foreach (long key in toDestroy)
         {
-            DestroyChunk(key);
+            StartCoroutine(DestroyChunk(key));
         }
         hashCheck.Clear();
         toDestroy.Clear();
