@@ -9,15 +9,16 @@ public class TestGen : MonoBehaviour
     public Dictionary<long, List<GameObject>> buildingMap;
 
     public const int CellWidth = 10;
-    public const int CityWidth = 30;
-    public const int CityHeight = 30;
+    public const int CityWidth = 15;
+    public const int CityHeight = 15;
     public const int BlockWidth = 4;
     public static int citySeed;
     public static int citySeed2;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
+        buildingMap = new Dictionary<long, List<GameObject>>();
         citySeed = Random.Range(0, 100000) * BlockWidth;
         citySeed2 = Random.Range(0, 100000) * BlockWidth;
         for (int i = 0; i < CityWidth; i++)
@@ -27,10 +28,13 @@ public class TestGen : MonoBehaviour
                 GenChunk(i, j);
             }
         }
-	}
+    }
 
     void GenChunk(int i, int j)
     {
+        long hash = i + (long)(j) * int.MaxValue;
+        buildingMap[hash] = new List<GameObject>();
+        Debug.Log("Creating Hash" + hash + " for point " + i + " " + j);
         bool iRoad = i % BlockWidth == 0;
         bool jRoad = j % BlockWidth == 0;
         int streetVal = iRoad || jRoad ? 0 : 1;
@@ -49,6 +53,7 @@ public class TestGen : MonoBehaviour
                 roadPick = 1;
             GameObject obj = Instantiate(RoadPrefabs[roadPick]);
             obj.transform.position = new Vector3(i * CellWidth, 0, j * CellWidth);
+            buildingMap[hash].Add(obj);
         }
         if (streetVal == 1)
         {
@@ -59,7 +64,6 @@ public class TestGen : MonoBehaviour
             var buildingHeight = Random.Range(minHeight, maxHeight);
             if (prefabs.Count > 0)
             {
-                long hash = i + j << 32;
                 float height = 0;
                 GameObject obj = Instantiate(prefabs[0]);
                 obj.transform.position = new Vector3(i * CellWidth, height, j * CellWidth);
@@ -81,8 +85,8 @@ public class TestGen : MonoBehaviour
 
     void DestroyChunk(int i, int j)
     {
-        long hash = i + j << 32;
-        foreach(GameObject obj in buildingMap[hash])
+        long hash = i + (long)(j) * int.MaxValue;
+        foreach (GameObject obj in buildingMap[hash])
         {
             Destroy(obj);
         }
@@ -101,11 +105,16 @@ public class TestGen : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
-		foreach(long key in buildingMap.Keys)
+        List<long> toDestroy = new List<long>();
+        foreach (long key in buildingMap.Keys)
+        {
+            //toDestroy.Add(key);
+        }
+        foreach (long key in toDestroy)
         {
             DestroyChunk(key);
         }
-	}
+    }
 }
