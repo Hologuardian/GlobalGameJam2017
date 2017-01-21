@@ -9,7 +9,7 @@ public class Guitar : Instrument {
     // Use this for initialization
     void Start () {
         //set up normal attack note
-        Amp.GetComponent<Renderer>().enabled = false;
+        //Amp.GetComponent<Renderer>().enabled = false;
     }
 	
 	// Update is called once per frame
@@ -33,10 +33,12 @@ public class Guitar : Instrument {
     public override void Utility() {
         if (AmpDropped == false)
         {
-            GameObject DroppedAmp = Amp;
+            //GameObject DroppedAmp = Amp;
             AmpDropped = true;
-            DroppedAmp.GetComponent<Amp>().Dropped(true);
-            Instantiate(DroppedAmp, transform.position, transform.rotation);
+            //DroppedAmp.GetComponent<Amp>().Dropped(true);
+            Amp amp = Instantiate(Amp, transform.position, transform.rotation).GetComponent<Amp>();
+            amp.Dropped(true);
+            Amp = amp.GetComponent<GameObject>();
         }
     }
     public override void Defense() {
