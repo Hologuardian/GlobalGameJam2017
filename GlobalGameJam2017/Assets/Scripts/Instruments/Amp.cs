@@ -37,7 +37,7 @@ public class Amp : MonoBehaviour {
     void HealPlayers() {
         foreach (TopDownController player in Players) {
             player.Health += HealAmount * Time.deltaTime;
-            print(player.Health);
+            //print(player.Health);
         }
     }
 

@@ -16,11 +16,17 @@ public class Projectile : MonoBehaviour
     public AnimationCurve frequencyX;
     public AnimationCurve frequencyZ;
 
+    public float frequency = 20.0f;  // Speed of sine movement
+    public float magnitude = 0.5f;   // Size of sine movement
+    private Vector3 axisX, axisZ;
+
+
     #endregion
 
     // Use this for initialization
     private void Start() {
         Destroy(gameObject, deathTime);
+        axisX = transform.right;
     }
 	
 
@@ -31,11 +37,17 @@ public class Projectile : MonoBehaviour
         float LifeTimePassed= LifeTime/deathTime;
         if (isLocalOrientation)
         {
-            transform.position += transform.TransformVector(new Vector3(amplitudeX.Evaluate(LifeTimePassed) * Mathf.Cos(frequencyX.Evaluate(LifeTimePassed) * Time.time) * speedX.Evaluate(LifeTimePassed), 0.0f, amplitudeZ.Evaluate(LifeTimePassed) * Mathf.Sin(frequencyZ.Evaluate(LifeTimePassed) * Time.time) * speedZ.Evaluate(LifeTimePassed)));
+            //transform.position += transform.TransformVector(new Vector3(
+            //    amplitudeX.Evaluate(LifeTimePassed) * Mathf.Cos(frequencyX.Evaluate(LifeTimePassed) * Time.time) * speedX.Evaluate(LifeTimePassed), 0.0f,
+            //    amplitudeZ.Evaluate(LifeTimePassed) * Mathf.Sin(frequencyZ.Evaluate(LifeTimePassed) * Time.time) * speedZ.Evaluate(LifeTimePassed)));
+            //transform.position += new Vector3(0.1f,0, amplitudeZ.Evaluate(LifeTimePassed) * Mathf.Sin(frequencyZ.Evaluate(LifeTimePassed) * Time.time) * speedZ.Evaluate(LifeTimePassed));
+            transform.position += axisX * Mathf.Sin(Time.time * frequency) * magnitude;
         }
         else
         {
-            transform.position += new Vector3(amplitudeX.Evaluate(LifeTimePassed) * Mathf.Cos(frequencyX.Evaluate(LifeTimePassed) * Time.time) * speedX.Evaluate(LifeTimePassed), 0.0f, amplitudeZ.Evaluate(LifeTimePassed) * Mathf.Sin(frequencyZ.Evaluate(LifeTimePassed) * Time.time) * speedZ.Evaluate(LifeTimePassed));
+            transform.position += new Vector3(
+                amplitudeX.Evaluate(LifeTimePassed) * Mathf.Cos(frequencyX.Evaluate(LifeTimePassed) * Time.time) * speedX.Evaluate(LifeTimePassed), 0.0f, 
+                amplitudeZ.Evaluate(LifeTimePassed) * Mathf.Sin(frequencyZ.Evaluate(LifeTimePassed) * Time.time) * speedZ.Evaluate(LifeTimePassed));
         }
     }
 

@@ -116,7 +116,12 @@ public class TopDownController : MonoBehaviour
             Vector3 Pos = transform.position;
             Pos.z += Input.GetAxis("R Vertical Controller " + PlayerID);
             Pos.x += Input.GetAxis("R Horizontal Controller " + PlayerID);
+           // print(Pos.x);
             Debug.DrawLine(transform.position,  Pos);
+
+            if (Input.GetAxis("R Horizontal Controller " + PlayerID) != 0 || Input.GetAxis("R Horizontal Controller " + PlayerID) != 0) {
+                _Instrument.Attack(gameObject.transform.forward);
+            }
 
             transform.rotation = Quaternion.AngleAxis( ((Mathf.Atan2(Pos.z-transform.position.z,Pos.x-transform.position.x)/Mathf.PI)*-180)+90, Vector3.up);
             //transform.Rotate(new Vector3(0,Mathf.Atan2(Pos.z, Pos.x),0));
