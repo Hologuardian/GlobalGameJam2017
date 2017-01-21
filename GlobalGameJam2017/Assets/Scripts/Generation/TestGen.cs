@@ -122,6 +122,7 @@ public class TestGen : MonoBehaviour
         var playerPos = player.transform.position;
         int playerX = ((int)(playerPos.x / CellWidth));
         int playerZ = ((int)(playerPos.z / CellWidth));
+        Debug.Log(playerX + " " + playerZ);
 
         List<long> toDestroy = new List<long>();
         List<long> hashCheck = new List<long>();
@@ -140,7 +141,6 @@ public class TestGen : MonoBehaviour
             {
                 int x = (int)(localHash % int.MaxValue) - int.MaxValue / 2;
                 int z = (int)(localHash / int.MaxValue) - int.MaxValue / 2;
-                Debug.Log(x + " " + z + " " + localHash);
                 StartCoroutine(GenChunk(x, z));
             }
         }
