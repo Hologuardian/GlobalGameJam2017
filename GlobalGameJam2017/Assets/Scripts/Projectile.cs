@@ -8,10 +8,15 @@ public class Projectile : MonoBehaviour
     public bool isLocalOrientation;
 
     public float deathTime = 2.0f;
-    public float amplitude = 1.0f;
-    public float speed = 0.5f;
-    public float frequency = 50.0f;
-#endregion
+    float LifeTime;
+    public AnimationCurve amplitudeX;
+    public AnimationCurve amplitudeZ;
+    public AnimationCurve speedX;
+    public AnimationCurve speedZ;
+    public AnimationCurve frequencyX;
+    public AnimationCurve frequencyZ;
+
+    #endregion
 
     // Use this for initialization
     private void Start() {
@@ -22,13 +27,15 @@ public class Projectile : MonoBehaviour
     // Physics update
     private void FixedUpdate()
     {
+        LifeTime += Time.deltaTime;
+        float LifeTimePassed= LifeTime/deathTime;
         if (isLocalOrientation)
         {
-            transform.position += transform.TransformVector(new Vector3(amplitude * Mathf.Cos(frequency * Time.time) * speed, 0.0f, amplitude * Mathf.Sin(frequency * Time.time) * speed));
+            transform.position += transform.TransformVector(new Vector3(amplitudeX.Evaluate(LifeTimePassed) * Mathf.Cos(frequencyX.Evaluate(LifeTimePassed) * Time.time) * speedX.Evaluate(LifeTimePassed), 0.0f, amplitudeZ.Evaluate(LifeTimePassed) * Mathf.Sin(frequencyZ.Evaluate(LifeTimePassed) * Time.time) * speedZ.Evaluate(LifeTimePassed)));
         }
         else
         {
-            transform.position += new Vector3(amplitude * Mathf.Cos(frequency * Time.time) * speed, 0.0f, amplitude * Mathf.Sin(frequency * Time.time) * speed);
+            transform.position += new Vector3(amplitudeX.Evaluate(LifeTimePassed) * Mathf.Cos(frequencyX.Evaluate(LifeTimePassed) * Time.time) * speedX.Evaluate(LifeTimePassed), 0.0f, amplitudeZ.Evaluate(LifeTimePassed) * Mathf.Sin(frequencyZ.Evaluate(LifeTimePassed) * Time.time) * speedZ.Evaluate(LifeTimePassed));
         }
     }
 

@@ -5,11 +5,13 @@ using UnityEngine;
 public class Guitar : Instrument {
     public GameObject Amp;
     public bool AmpDropped;
-
+    float attackTime,mainAttackTime;
+    public float AttackCoolDown, AggroLightCoolDown, AggroHeavyCoolDown, UtilityCoolDown, DefenseCoolDown;
     // Use this for initialization
     void Start () {
         //set up normal attack note
         //Amp.GetComponent<Renderer>().enabled = false;
+        attackTime = 0;
     }
 	
 	// Update is called once per frame
@@ -17,18 +19,33 @@ public class Guitar : Instrument {
         if (AmpDropped) {
             
         }
-	}
-
-    public override void Attack(Vector3 Direction) {
-        if (!AmpDropped)
-        {
-            Instantiate(Note,transform.position, transform.rotation);
+        if (attackTime > 0) {
+            attackTime -= Time.deltaTime;
         }
-        else {
-            Instantiate(Note, Amp.transform.position, Amp.transform.rotation);
+        if (mainAttackTime > 0)
+        {
+            mainAttackTime -= Time.deltaTime;
         }
     }
-    public override void AggroLight() { }
+
+    public override void Attack(Vector3 Direction) {
+        if (mainAttackTime <= 0)
+        {
+            if (!AmpDropped)
+            {
+                Instantiate(Note, transform.position, transform.rotation);
+            }
+            else
+            {
+                Instantiate(Note, Amp.transform.position, Amp.transform.rotation);
+            }
+            mainAttackTime = AttackCoolDown;
+        }
+    }
+    public override void AggroLight() {
+        if (attackTime < 0) {
+        }
+    }
     public override void AggroHeavy() { }
     public override void Utility() {
         if (AmpDropped == false)
