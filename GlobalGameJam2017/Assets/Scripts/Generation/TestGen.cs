@@ -22,18 +22,11 @@ public class TestGen : MonoBehaviour
         buildingMap = new Dictionary<long, List<GameObject>>();
         citySeed = Random.Range(0, 100000) * BlockWidth;
         citySeed2 = Random.Range(0, 100000) * BlockWidth;
-        for (int i = 0; i < CityWidth; i++)
-        {
-            for (int j = 0; j < CityHeight; j++)
-            {
-                GenChunk(i, j);
-            }
-        }
     }
 
     void GenChunk(int i, int j)
     {
-        long hash = i + (long)(j) * int.MaxValue;
+        long hash = Hash(i, j);
         buildingMap[hash] = new List<GameObject>();
         //Debug.Log("Creating Hash " + hash + " for point " + i + " " + j);
         bool iRoad = i % BlockWidth == 0;
@@ -41,7 +34,7 @@ public class TestGen : MonoBehaviour
         int streetVal = iRoad || jRoad ? 0 : 1;
 
         int buildingPick = (((i + citySeed) / BlockWidth) ^ ((j + citySeed2) / BlockWidth));//Random.Range(0, BuildingPrefabs.Count);
-        buildingPick %= BuildingPrefabs.Count;
+        buildingPick = Mathf.Abs(buildingPick) % BuildingPrefabs.Count;
 
         if (streetVal == 0)
         {
@@ -86,7 +79,7 @@ public class TestGen : MonoBehaviour
 
     void DestroyChunk(int i, int j)
     {
-        long hash = i + (long)(j) * int.MaxValue;
+        long hash = Hash(i, j);
         foreach (GameObject obj in buildingMap[hash])
         {
             Destroy(obj);
@@ -105,17 +98,53 @@ public class TestGen : MonoBehaviour
         buildingMap.Remove(hash);
     }
 
+    long Hash(int i, int j)
+    {
+        return (i + int.MaxValue / 2) + (long)(j + int.MaxValue / 2) * int.MaxValue;
+    }
+
     // Update is called once per frame
     void Update()
     {
+        var playerPos = player.transform.position;
+        int playerX = ((int)(playerPos.x / CellWidth));
+        int playerZ = ((int)(playerPos.z / CellWidth));
+
         List<long> toDestroy = new List<long>();
+        List<long> hashCheck = new List<long>();
+        for (int i = playerX - 2 * BlockWidth; i <= playerX + 2 * BlockWidth; i++)
+        {
+            for (int j = playerZ - 2 * BlockWidth; j <= playerZ + 2 * BlockWidth; j++)
+            {
+                var hashy = Hash(i, j);
+                hashCheck.Add(hashy);
+            }
+        }
+        
+        foreach (long localHash in hashCheck)
+        {
+            if (!buildingMap.ContainsKey(localHash))
+            {
+                int x = (int)(localHash % int.MaxValue) - int.MaxValue / 2;
+                int z = (int)(localHash / int.MaxValue) - int.MaxValue / 2;
+                Debug.Log(x + " " + z + " " + localHash);
+                GenChunk(x, z);
+            }
+        }
+
         foreach (long key in buildingMap.Keys)
         {
-            //toDestroy.Add(key);
+            if (!hashCheck.Contains(key))
+            {
+                toDestroy.Add(key);
+            }
         }
+
         foreach (long key in toDestroy)
         {
             DestroyChunk(key);
         }
+        hashCheck.Clear();
+        toDestroy.Clear();
     }
 }
