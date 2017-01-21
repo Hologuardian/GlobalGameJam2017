@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class TopDownController : MonoBehaviour
 {
     [SerializeField]
@@ -35,26 +36,22 @@ public class TopDownController : MonoBehaviour
     public bool isOnGround;
     public bool isTouching;
 
+    public KeyCode PlayerInputA;
+    public KeyCode PlayerInputX;
+    public KeyCode PlayerInputY;
+    public KeyCode PlayerInputB;
+    public KeyCode PlayerInputL3;
+
     // Use this for initialization
     protected void Start()
     {
-        //base.Start();
-        // DEBUGGING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         isOnGround = true;
     }
 
     // Update is called once per frame
     protected  void Update()
     {
-        // THIS NEEDS TO GO AT SOME POINT
-        // This is my hacky way of shutting the damn errors up for a bit so I can debug.
-        //if (Movement.magnitude > 0)
-            HandleInput();
-
-        // Line renderer code
-        // has potential if ever I want laser beads
-        Vector3[] positions = new Vector3[2];
-        positions[0] = transform.position;
+        HandleInput();
     }
 
     void HandleInput()
@@ -66,10 +63,10 @@ public class TopDownController : MonoBehaviour
 
             // If moving forward or backward, add only the forward backward component (z)
             if (Input.GetKey(KeyCode.W))
-                moveGoal.y = Movement.y;
+                moveGoal.z = Movement.z;
  
             else if (Input.GetKey(KeyCode.S))
-                moveGoal.y = -Movement.y;
+                moveGoal.z = -Movement.z;
 
             // If moving sideways, add only the sideways component (x)
             if (Input.GetKey(KeyCode.A))
@@ -81,16 +78,21 @@ public class TopDownController : MonoBehaviour
             }
             if (Input.GetAxis("L Vertical Controller") != 0)
             {
-                moveGoal.y = Input.GetAxis("L Vertical Controller");
+                moveGoal.z = Input.GetAxis("L Vertical Controller");
             }
+            /*
             if (Input.GetAxis("R Horizontal Controller") != 0)
             {
                 moveGoal.x = Input.GetAxis("R Horizontal Controller");
             }
             if (Input.GetAxis("R Vertical Controller") != 0)
             {
-                moveGoal.y = Input.GetAxis("R Vertical Controller");
-            }
+                moveGoal.z = Input.GetAxis("R Vertical Controller");
+            }*/
+            Vector3 Pos = transform.position;
+            Pos.z += Input.GetAxis("R Vertical Controller");
+            Pos.x += Input.GetAxis("R Horizontal Controller");
+            Debug.DrawLine(transform.position,  Pos);
 
 
             // Normalize it
@@ -101,18 +103,18 @@ public class TopDownController : MonoBehaviour
             // So if you normalize the whole mess, then restore the leading axis (z) take whatever percentage of the current move vector in comparison to the goal movement speed and use it as a
             // multiplier against the secondary axis (x) magnitude, you establish a move vector that is limited to a maximum magnitude of the leading axis.
             // Save I am ignoring y, because it is for jumping, which doesn't need any of this.
-            moveGoal.y *= Movement.y;
+            moveGoal.z *= Movement.z;
             moveGoal.x *= (1 - (moveGoal.y / Movement.y)) * Movement.x;
 
             // If the z is negative the player is moving backwards, they should be backstepping, therefore they need to use the backstepMult
-            if (moveGoal.y < 0)
-                moveGoal.y *= MovementBackstepMult;
+            if (moveGoal.z < 0)
+                moveGoal.z *= MovementBackstepMult;
 
             // Sprinting, if moving forward
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift)|| Input.GetKey(KeyCode.JoystickButton8))
             {
-                if (moveGoal.y > 0)
-                    moveGoal.y *= MovementSprintMult;
+                if (moveGoal.z > 0)
+                    moveGoal.z *= MovementSprintMult;
             }
 
             // Then it is just a matter of using the beautiful SmoothDamp method (much like a spring, but unable to go past the goal) to figure out the best way of making the player move naturally
@@ -123,6 +125,7 @@ public class TopDownController : MonoBehaviour
         // Shoot
         if (Input.GetButton("Fire1")|| Input.GetKey(KeyCode.JoystickButton0))
         {
+            Input.
             print("A");
         }
     }
