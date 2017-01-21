@@ -9,7 +9,7 @@ public class TestGen : MonoBehaviour
     public Dictionary<long, List<GameObject>> buildingMap;
 
     public const int CellWidth = 10;
-    public const int CityWidth = 7; //Will ciel to odd numbers.
+    public const int CityWidth = 9; //Will ciel to odd numbers.
     public const int CityHeight = 5;
     public const int BlockWidth = 4;
     public static int citySeed;
