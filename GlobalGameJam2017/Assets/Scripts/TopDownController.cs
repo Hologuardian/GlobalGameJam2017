@@ -117,23 +117,26 @@ public class TopDownController : MonoBehaviour
             Pos.z += Input.GetAxis("R Vertical Controller " + PlayerID);
             Pos.x += Input.GetAxis("R Horizontal Controller " + PlayerID);
             Debug.DrawLine(transform.position,  Pos);
+
+            transform.rotation = Quaternion.AngleAxis( (Mathf.Atan2(Pos.z-transform.position.z,Pos.x-transform.position.x)/3.14f)*-180, Vector3.up);
             //transform.Rotate(new Vector3(0,Mathf.Atan2(Pos.z, Pos.x),0));
-            transform.rotation = Quaternion.LookRotation(Pos);
+            //transform.rotation = Quaternion.LookRotation(Pos);
             // Normalize it
-            moveGoal.Normalize();
+            //moveGoal.Normalize();
 
             // Here is where the magic happens
             // Usually if you have a z forward of 20 and an x sideways of 5 if you just add them together the character moves more than the maximum of 20 on a diagonal, not how people move
             // So if you normalize the whole mess, then restore the leading axis (z) take whatever percentage of the current move vector in comparison to the goal movement speed and use it as a
             // multiplier against the secondary axis (x) magnitude, you establish a move vector that is limited to a maximum magnitude of the leading axis.
             // Save I am ignoring y, because it is for jumping, which doesn't need any of this.
+            if (moveGoal.x > 0)
+            {
+                print("moveGoal.x *= Movement.x " + moveGoal.x + "*=" + Movement.x);
+            }
             moveGoal.z *= Movement.z;
-            moveGoal.x *= (1 - (moveGoal.z / Movement.z)) * Movement.x;
-
-            // If the z is negative the player is moving backwards, they should be backstepping, therefore they need to use the backstepMult
-            if (moveGoal.z < 0)
-                moveGoal.z *= MovementBackstepMult;
-
+            
+            moveGoal.x *= Movement.x;
+            
             // Sprinting, if moving forward
             if (Input.GetKey(KeyCode.LeftShift)|| Input.GetKey(PlayerInputL3))
             {
@@ -142,7 +145,7 @@ public class TopDownController : MonoBehaviour
             }
 
             // Then it is just a matter of using the beautiful SmoothDamp method (much like a spring, but unable to go past the goal) to figure out the best way of making the player move naturally
-            transform.position = Vector3.SmoothDamp(transform.position, transform.position + transform.TransformDirection(moveGoal), ref currentVelocity, 1);
+            transform.position = Vector3.SmoothDamp(transform.position, transform.position + moveGoal, ref currentVelocity, 1);
         }
 
         // Action logic
