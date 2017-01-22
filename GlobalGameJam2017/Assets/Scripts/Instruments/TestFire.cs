@@ -1,27 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-public class TestFire : MonoBehaviour {
-    public Projectile Note;
-    public float coolDown,waitTime;
+public class TestFire : MonoBehaviour
+{
+    public GameObject Note;
+    public float coolDown;
+    public float velocity;
+    private float waitTime;
+    public float Damage = 1.0f;
     // Use this for initialization
-    void Start () {
-        waitTime = 0;
+    void Start()
+    {
+        waitTime = coolDown;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         waitTime -= Time.deltaTime;
         if (waitTime <= 0)
         {
-            waitTime = coolDown;
-            Projectile note = new Projectile();
-            print(transform.rotation);
-            note = Instantiate(Note, this.transform.position, this.transform.rotation);
-            note.GetComponent<Rigidbody>().velocity = transform.forward*2;
-            Destroy(note.gameObject, 1f);
-            Destroy(note, 1f);
+            waitTime += coolDown;
+            GameObject inst = Instantiate(Note, this.transform.position , this.transform.rotation);
+            inst.GetComponent<Rigidbody>().velocity = transform.forward * velocity;
+            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
+            Debug.Log(transform.forward);
         }
     }
 }
