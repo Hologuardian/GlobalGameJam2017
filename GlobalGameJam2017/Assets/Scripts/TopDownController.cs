@@ -150,7 +150,7 @@ public class TopDownController : MonoBehaviour
             }
 
             // Then it is just a matter of using the beautiful SmoothDamp method (much like a spring, but unable to go past the goal) to figure out the best way of making the player move naturally
-             body.MovePosition(Vector3.SmoothDamp(body.position, body.position + moveGoal, ref currentVelocity, 1));
+            body.MovePosition(body.position + moveGoal * Time.deltaTime);//Vector3.SmoothDamp(body.position, body.position + moveGoal, ref currentVelocity, 1));
         }
 
         // Action logic

@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestFire : MonoBehaviour
+public class TestFire2 : MonoBehaviour
 {
     public GameObject Note;
     public float coolDown;
-    public float velocity;
     private float waitTime;
+    public Vector3 spawnDelta;
     // Use this for initialization
     void Start()
     {
@@ -21,9 +21,8 @@ public class TestFire : MonoBehaviour
         if (waitTime <= 0)
         {
             waitTime += coolDown;
-            GameObject inst = Instantiate(Note, this.transform.position , this.transform.rotation);
-            inst.GetComponent<Rigidbody>().velocity = transform.forward * velocity;
-            Debug.Log(transform.forward);
+            GameObject inst = Instantiate(Note, transform.position + spawnDelta, this.transform.rotation);
+            inst.transform.parent = this.transform;
         }
     }
 }

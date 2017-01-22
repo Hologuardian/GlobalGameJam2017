@@ -11,7 +11,7 @@ public class TestGen : MonoBehaviour
     public const int CellWidth = 10;
     public const int CityWidth = 9; //Will ciel to odd numbers.
     public const int CityHeight = 5;
-    public const int BlockWidth = 4;
+    public const int BlockWidth = 3; // Will ciel to odd numbers.
     public static int citySeed;
     public static int citySeed2;
     public GameObject player;

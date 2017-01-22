@@ -86,11 +86,14 @@
     <Compile Include="Assets\Scripts\Generation\DungeonGen.cs" />
     <Compile Include="Assets\Scripts\Generation\Sector.cs" />
     <Compile Include="Assets\Scripts\Generation\TestGen.cs" />
+    <Compile Include="Assets\Scripts\Generation\Tile.cs" />
     <Compile Include="Assets\Scripts\Instruments\Amp.cs" />
     <Compile Include="Assets\Scripts\Instruments\Bass.cs" />
+    <Compile Include="Assets\Scripts\Instruments\Drums.cs" />
     <Compile Include="Assets\Scripts\Instruments\Guitar.cs" />
     <Compile Include="Assets\Scripts\Instruments\Instrument.cs" />
     <Compile Include="Assets\Scripts\Instruments\TestFire.cs" />
+    <Compile Include="Assets\Scripts\Instruments\TestFire2.cs" />
     <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\Skill.cs" />
     <Compile Include="Assets\Scripts\ThirdPersonController.cs" />
