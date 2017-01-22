@@ -81,6 +81,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\JenkyCameraMove.cs" />
+    <Compile Include="Assets\JenkyPressor.cs" />
+    <Compile Include="Assets\JenkyTextMove.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\Generation\Building.cs" />
     <Compile Include="Assets\Scripts\Generation\DungeonGen.cs" />
@@ -101,6 +104,7 @@
     <Compile Include="Assets\Scripts\Skill.cs" />
     <Compile Include="Assets\Scripts\ThirdPersonController.cs" />
     <Compile Include="Assets\Scripts\TopDownController.cs" />
+    <Compile Include="Assets\UIFadeOverTime.cs" />
     <Compile Include="Assets\UIPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
