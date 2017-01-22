@@ -29,7 +29,12 @@ public class Guitar : Instrument {
         if (AttackCoolDownWait <= 0)
         {
             AttackCoolDownWait = AttackCoolDown;
-            GameObject inst = Instantiate(Note[0], this.transform.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
+            GameObject inst = new GameObject();
+            if (!AmpDropped)
+                inst = Instantiate(Note[0], this.transform.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
+            else
+                inst = Instantiate(Note[0], AmpPos.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
+
             inst.GetComponent<Rigidbody>().velocity = Direction * velocity;
             inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
         }
@@ -38,7 +43,11 @@ public class Guitar : Instrument {
         if (AggroLightCoolDownWait <= 0)
         {
             AggroLightCoolDownWait = AggroLightCoolDown;
-            GameObject inst = Instantiate(Note[1], this.transform.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
+            GameObject inst = new GameObject();
+            if (!AmpDropped)
+                inst = Instantiate(Note[1], this.transform.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
+            else
+                inst = Instantiate(Note[1], AmpPos.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
             inst.GetComponent<Rigidbody>().velocity = Direction * velocity;
             inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
         }
