@@ -40,23 +40,23 @@ public class Bass : Instrument
         {
             if (!AmpDropped)
             {
-                Instantiate(Note, transform.position, transform.rotation);
+                Instantiate(Note[0], transform.position, transform.rotation);
             }
             else
             {
-                Instantiate(Note, Amp.transform.position, Amp.transform.rotation);
+                Instantiate(Note[0], Amp.transform.position, Amp.transform.rotation);
             }
             mainAttackTime = AttackCoolDown;
         }
     }
-    public override void AggroLight()
+    public override void AggroLight(Vector3 Direction)
     {
         if (attackTime < 0)
         {
         }
     }
-    public override void AggroHeavy() { }
-    public override void Utility()
+    public override void AggroHeavy(Vector3 Direction) { }
+    public override void Utility(Vector3 Direction)
     {
         if (AmpDropped == false)
         {
@@ -68,7 +68,7 @@ public class Bass : Instrument
             Amp = amp.GetComponent<GameObject>();
         }
     }
-    public override void Defense()
+    public override void Defense(Vector3 Direction)
     {
 
     }

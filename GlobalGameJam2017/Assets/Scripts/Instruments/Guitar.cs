@@ -1,67 +1,73 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
+
 
 public class Guitar : Instrument {
     public GameObject Amp;
     Transform AmpPos;
     public bool AmpDropped;
-    float attackTime,mainAttackTime;
-    public float AttackCoolDown, AggroLightCoolDown, AggroHeavyCoolDown, UtilityCoolDown, DefenseCoolDown;
+    
     // Use this for initialization
     void Start () {
         //set up normal attack note
         //Amp.GetComponent<Renderer>().enabled = false;
-        attackTime = 0;
-        AttackCoolDown = 0.5f;
+      
+        //AttackCoolDown = 0.5f;
         AmpPos = gameObject.transform;
     }
-	
-	// Update is called once per frame
-	void Update () {
-        if (attackTime > 0) {
-            attackTime -= Time.deltaTime;
-        }
-        if (mainAttackTime > 0)
-        {
-            mainAttackTime -= Time.deltaTime;
-        }
+
+    // Update is called once per frame
+    public override void Update () {
+        base.Update();
+
+
     }
 
     public override void Attack(Vector3 Direction) {
-        if (mainAttackTime <= 0)
+        if (AttackCoolDownWait <= 0)
         {
-            Projectile note = new Projectile();
-            if (!AmpDropped)
-            {
-               note = Instantiate(Note, transform.position, transform.rotation);
-            }
-            else
-            {
-               note = Instantiate(Note, AmpPos.position, AmpPos.rotation);
-            }
-            note.GetComponent<Rigidbody>().velocity = Direction * 6;
-            mainAttackTime = AttackCoolDown;
+            AttackCoolDownWait = AttackCoolDown;
+            GameObject inst = Instantiate(Note[0], this.transform.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
+            inst.GetComponent<Rigidbody>().velocity = Direction * velocity;
+            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
         }
     }
-    public override void AggroLight() {
-        if (attackTime < 0) {
-        }
-    }
-    public override void AggroHeavy() { }
-    public override void Utility() {
-        if (AmpDropped == false)
+    public override void AggroLight(Vector3 Direction) {
+        if (AggroLightCoolDownWait <= 0)
         {
-            //GameObject DroppedAmp = Amp;
-            AmpDropped = true;
-            //DroppedAmp.GetComponent<Amp>().Dropped(true);
-            GameObject amp = Instantiate(Amp, transform.position, transform.rotation) as GameObject;
-            amp.GetComponent<Amp>().Dropped(true);
-            AmpPos = amp.transform;
-            print(AmpPos);
+            AggroLightCoolDownWait = AggroLightCoolDown;
+            GameObject inst = Instantiate(Note[1], this.transform.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
+            inst.GetComponent<Rigidbody>().velocity = Direction * velocity;
+            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
         }
     }
-    public override void Defense() {
-       
+    public override void AggroHeavy(Vector3 Direction) {
+        base.AggroHeavy(Direction);
+        if (AggroHeavyCoolDownWait <= 0) {
+            AggroHeavyCoolDownWait = AggroHeavyCoolDown;
+        }
+    }
+    public override void Utility(Vector3 Direction) {
+        if (UtilityCoolDownWait <= 0)
+        {
+            UtilityCoolDownWait = UtilityCoolDown;
+            if (AmpDropped == false)
+            {
+                //GameObject DroppedAmp = Amp;
+                AmpDropped = true;
+                //DroppedAmp.GetComponent<Amp>().Dropped(true);
+                GameObject amp = Instantiate(Amp, transform.position, transform.rotation) as GameObject;
+                amp.GetComponent<Amp>().Dropped(true);
+                AmpPos = amp.transform;
+                print(AmpPos);
+            }
+        }
+    }
+    public override void Defense(Vector3 Direction) {
+        if (DefenseCoolDownWait <= 0) {
+            DefenseCoolDownWait = DefenseCoolDown;
+        } 
     }
 }

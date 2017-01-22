@@ -37,9 +37,14 @@ public class TopDownController : MonoBehaviour
     KeyCode PlayerInputY;
     KeyCode PlayerInputB;
     KeyCode PlayerInputL3;
+    KeyCode PlayerInputLB;
+    KeyCode PlayerInputRB;
 
     public Instrument _Instrument;
 
+    bool usedHeavy;
+    float HeavyWait;
+    Vector3 moveGoal;
     // Use this for initialization
     protected void Start()
     {
@@ -57,6 +62,8 @@ public class TopDownController : MonoBehaviour
                 PlayerInputY = KeyCode.Joystick1Button3;
                 PlayerInputB = KeyCode.Joystick1Button1;
                 PlayerInputL3 = KeyCode.Joystick1Button8;
+                PlayerInputLB = KeyCode.Joystick1Button4;
+                PlayerInputRB = KeyCode.Joystick1Button5;
                 break;
             case 2:
                 PlayerInputA = KeyCode.Joystick2Button0;
@@ -64,6 +71,8 @@ public class TopDownController : MonoBehaviour
                 PlayerInputY = KeyCode.Joystick2Button3;
                 PlayerInputB = KeyCode.Joystick2Button1;
                 PlayerInputL3 = KeyCode.Joystick2Button8;
+                PlayerInputLB = KeyCode.Joystick2Button4;
+                PlayerInputRB = KeyCode.Joystick2Button5;
                 break;
             case 3:
                 PlayerInputA = KeyCode.Joystick3Button0;
@@ -71,6 +80,8 @@ public class TopDownController : MonoBehaviour
                 PlayerInputY = KeyCode.Joystick3Button3;
                 PlayerInputB = KeyCode.Joystick3Button1;
                 PlayerInputL3 = KeyCode.Joystick3Button8;
+                PlayerInputLB = KeyCode.Joystick3Button4;
+                PlayerInputRB = KeyCode.Joystick3Button5;
                 break;
             case 4:
                 PlayerInputA = KeyCode.Joystick4Button0;
@@ -78,6 +89,8 @@ public class TopDownController : MonoBehaviour
                 PlayerInputY = KeyCode.Joystick4Button3;
                 PlayerInputB = KeyCode.Joystick4Button1;
                 PlayerInputL3 = KeyCode.Joystick4Button8;
+                PlayerInputLB = KeyCode.Joystick4Button4;
+                PlayerInputRB = KeyCode.Joystick4Button5;
                 break;
         }
     }
@@ -87,30 +100,32 @@ public class TopDownController : MonoBehaviour
     {
         HandleInput();
     }
+    void keyboardMove() {
+        // Establish a temporary movement vector
+        moveGoal = Vector3.zero;
 
+        // If moving forward or backward, add only the forward backward component (z)
+        if (Input.GetKey(KeyCode.W))
+            moveGoal.z = Movement.z;
+
+        else if (Input.GetKey(KeyCode.S))
+            moveGoal.z = -Movement.z;
+        if (Input.GetKey(KeyCode.A))
+            moveGoal.x = -Movement.x;
+        else if (Input.GetKey(KeyCode.D))
+            moveGoal.x = Movement.x;
+        moveGoal.Normalize();
+    }
     void HandleInput()
     {
-        if (isOnGround)
+
+        if (!usedHeavy)
         {
-            // Establish a temporary movement vector
-            Vector3 moveGoal = Vector3.zero;
+            moveGoal = Vector3.zero;
 
-            // If moving forward or backward, add only the forward backward component (z)
-            
-            if (Input.GetKey(KeyCode.W))
-                moveGoal.z = Movement.z;
- 
-            else if (Input.GetKey(KeyCode.S))
-                moveGoal.z = -Movement.z;
-            if (Input.GetKey(KeyCode.A))
-                moveGoal.x = -Movement.x;
-            else if (Input.GetKey(KeyCode.D))
-                moveGoal.x = Movement.x;
-            moveGoal.Normalize();
-
-            if (Input.GetAxis("L Horizontal Controller " + PlayerID) != 0 ){
+            if (Input.GetAxis("L Horizontal Controller " + PlayerID) != 0)
+            {
                 moveGoal.x = Input.GetAxis("L Horizontal Controller " + PlayerID);
-                
             }
             if (Input.GetAxis("L Vertical Controller " + PlayerID) != 0)
             {
@@ -119,67 +134,86 @@ public class TopDownController : MonoBehaviour
             Vector3 Pos = transform.position;
             Pos.z += Input.GetAxis("L Vertical Controller " + PlayerID);
             Pos.x += Input.GetAxis("L Horizontal Controller " + PlayerID);
-           // print(Pos.x);
-            Debug.DrawLine(transform.position,  Pos);
 
-            if (Input.GetAxis("R Horizontal Controller " + PlayerID) != 0 || Input.GetAxis("R Horizontal Controller " + PlayerID) != 0) {
-                _Instrument.Attack(gameObject.transform.forward);
-            }
 
-            transform.rotation = Quaternion.AngleAxis( ((Mathf.Atan2(Pos.z-transform.position.z,Pos.x-transform.position.x)/Mathf.PI)*-180)+90, Vector3.up);
-            //transform.Rotate(new Vector3(0,Mathf.Atan2(Pos.z, Pos.x),0));
-            //transform.rotation = Quaternion.LookRotation(Pos);
-            // Normalize it
-            //moveGoal.Normalize();
+            // print(Pos.x);
+            Debug.DrawLine(transform.position, Pos);
+            Pos -= transform.position;
 
-            // Here is where the magic happens
-            // Usually if you have a z forward of 20 and an x sideways of 5 if you just add them together the character moves more than the maximum of 20 on a diagonal, not how people move
-            // So if you normalize the whole mess, then restore the leading axis (z) take whatever percentage of the current move vector in comparison to the goal movement speed and use it as a
-            // multiplier against the secondary axis (x) magnitude, you establish a move vector that is limited to a maximum magnitude of the leading axis.
-            // Save I am ignoring y, because it is for jumping, which doesn't need any of this.
-            if (moveGoal.x > 0)
+            if (Pos.magnitude > 0)
             {
-                //print("moveGoal.x *= Movement.x " + moveGoal.x + "*=" + Movement.x);
+                transform.rotation = Quaternion.AngleAxis(((Mathf.Atan2(Pos.z, Pos.x) / Mathf.PI) * -180) + 90, Vector3.up);
             }
+
             moveGoal.z *= Movement.z;
-            
             moveGoal.x *= Movement.x;
 
             // Sprinting, if moving forward
-            if (Input.GetKey(KeyCode.LeftShift)|| Input.GetKey(PlayerInputL3))
+            if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(PlayerInputL3))
             {
                 if (moveGoal.z > 0)
                     moveGoal.z *= MovementSprintMult;
             }
-                
-                animator.SetFloat("Movespeed", moveGoal.magnitude);
+
+            animator.SetFloat("Movespeed", moveGoal.magnitude);
             // Then it is just a matter of using the beautiful SmoothDamp method (much like a spring, but unable to go past the goal) to figure out the best way of making the player move naturally
             body.MovePosition(Vector3.SmoothDamp(body.position, body.position + moveGoal, ref currentVelocity, 1));
-        }
 
-        // Action logic
-        // Shoot
-        
-        if (Input.GetKey(PlayerInputX))
-        {
-            _Instrument.AggroLight();
-            print("X");
+
+            // Action logic
+            // Shoot
+            Vector3 Pos2 = transform.position;
+            Pos2 += new Vector3(Input.GetAxis("R Horizontal Controller " + PlayerID), 0, Input.GetAxis("R Vertical Controller " + PlayerID));
+            Debug.DrawLine(transform.position, Pos2);
+            Vector3 attackDirction = Pos2 - transform.position;
+
+            if (Input.GetAxis("R Vertical Controller " + PlayerID) != 0 || Input.GetAxis("R Horizontal Controller " + PlayerID) != 0)
+            {
+                _Instrument.Attack(attackDirction);
+            }
+
+            if (Input.GetKey(PlayerInputLB))
+            {
+                _Instrument.Defense(attackDirction);
+            }
+            //left LT
+            if (Input.GetAxis("Controller Triggers Left " + PlayerID) > 0.06)
+            {
+                _Instrument.Utility(attackDirction);
+            }
+            //right RT
+            else if (Input.GetAxis("Controller Triggers Right " + PlayerID) > 0.06)
+            {
+                print(Input.GetAxisRaw("Controller Triggers Right " + PlayerID));
+                _Instrument.AggroHeavy(attackDirction);
+                animator.SetBool("Heavyattack", true);
+                usedHeavy = true;
+                HeavyWait = animator.GetCurrentAnimatorStateInfo(0).length;
+            }
+
+            if (Input.GetKey(PlayerInputRB))
+            {
+                _Instrument.AggroLight(attackDirction);
+            }
+
+            if (Input.GetKey(PlayerInputA) || Input.GetKey(KeyCode.Space))
+            {
+                print("A");
+            }
+            if (Input.GetKey(PlayerInputB))
+            {
+
+                print("B");
+            }
         }
-        if (Input.GetKey(PlayerInputY))
+        else if (HeavyWait < -100 && usedHeavy)
         {
-            _Instrument.AggroHeavy();
-            animator.SetBool("Heavyattack", true);
-           print("Y");
+            animator.SetBool("Heavyattack", false);
+            usedHeavy = false;
         }
-        if (Input.GetKey(PlayerInputA)||Input.GetKey(KeyCode.Space))
-        {
-            _Instrument.Utility();
-            print("A");
-        }
-        if (Input.GetKey(PlayerInputB))
-        {
-            _Instrument.Defense();
-            print("B");
+        else if (usedHeavy) {
+            HeavyWait -= animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+            print(HeavyWait);
         }
     }
 
