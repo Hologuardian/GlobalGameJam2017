@@ -19,14 +19,14 @@ Platform assembly: D:\_GameDev\Git\GlobalGameJam2017\GlobalGameJam2017\Offkey_Da
 Loading D:\_GameDev\Git\GlobalGameJam2017\GlobalGameJam2017\Offkey_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: D:\_GameDev\Git\GlobalGameJam2017\GlobalGameJam2017\Offkey_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll (this message is harmless)
 Loading D:\_GameDev\Git\GlobalGameJam2017\GlobalGameJam2017\Offkey_Data\Managed\UnityEngine.PlaymodeTestsRunner.dll into Unity Child Domain
-- Completed reload, in  0.225 seconds
+- Completed reload, in  0.030 seconds
 Platform assembly: D:\_GameDev\Git\GlobalGameJam2017\GlobalGameJam2017\Offkey_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\_GameDev\Git\GlobalGameJam2017\GlobalGameJam2017\Offkey_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
-UnloadTime: 1.143608 ms
+UnloadTime: 1.134134 ms
 Setting up 2 worker threads for Enlighten.
-  Thread -> id: 3268 -> priority: 1 
-  Thread -> id: 38e8 -> priority: 1 
+  Thread -> id: 13e0 -> priority: 1 
+  Thread -> id: 1008 -> priority: 1 
