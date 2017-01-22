@@ -56,11 +56,11 @@ public class Speaker : MonoBehaviour
                     deadlyShotTime += deadlyShotDown;
                     GameObject inst = Instantiate(deadlyAttack, this.transform.position, transform.rotation);
                     inst.GetComponent<Rigidbody>().velocity = inst.transform.forward * 2f;
-                    inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
+                    inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = deadlyDamage);
 
                     GameObject inst2 = Instantiate(deadlyAttack2, this.transform.position, transform.rotation);
                     inst2.GetComponent<Rigidbody>().velocity = inst2.transform.forward * 2f;
-                    inst2.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
+                    inst2.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = deadlyDamage);
                 }
             }
             else
@@ -102,11 +102,11 @@ public class Speaker : MonoBehaviour
 
                 GameObject inst = Instantiate(chargeAttack, this.transform.position, Quaternion.Euler(angles));
                 inst.GetComponent<Rigidbody>().velocity = inst.transform.forward * chargeVelocity;
-                inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
+                inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = chargeDamage);
 
                 GameObject inst2 = Instantiate(chargeAttack2, this.transform.position, Quaternion.Euler(angles));
                 inst2.GetComponent<Rigidbody>().velocity = inst2.transform.forward * chargeVelocity;
-                inst2.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
+                inst2.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = chargeDamage);
             }
         }
     }

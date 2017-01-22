@@ -81,6 +81,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\OpenDoor.cs" />
     <Compile Include="Assets\Scripts\Controller.cs" />
     <Compile Include="Assets\Scripts\Generation\Building.cs" />
     <Compile Include="Assets\Scripts\Generation\DungeonGen.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Assets\Scripts\Instruments\Bass.cs" />
     <Compile Include="Assets\Scripts\Instruments\Drums.cs" />
     <Compile Include="Assets\Scripts\Instruments\Guitar.cs" />
+    <Compile Include="Assets\Scripts\Instruments\Guss.cs" />
     <Compile Include="Assets\Scripts\Instruments\Instrument.cs" />
     <Compile Include="Assets\Scripts\Instruments\Speaker.cs" />
     <Compile Include="Assets\Scripts\Instruments\TestFire.cs" />
