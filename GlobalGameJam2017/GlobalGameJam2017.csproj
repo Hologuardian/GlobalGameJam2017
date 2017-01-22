@@ -96,6 +96,7 @@
     <Compile Include="Assets\Scripts\Instruments\TestFire.cs" />
     <Compile Include="Assets\Scripts\Instruments\TestFire2.cs" />
     <Compile Include="Assets\Scripts\Projectile.cs" />
+    <Compile Include="Assets\Scripts\Rotate.cs" />
     <Compile Include="Assets\Scripts\Skill.cs" />
     <Compile Include="Assets\Scripts\ThirdPersonController.cs" />
     <Compile Include="Assets\Scripts\TopDownController.cs" />

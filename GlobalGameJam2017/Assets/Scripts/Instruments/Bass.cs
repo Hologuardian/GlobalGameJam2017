@@ -15,8 +15,6 @@ public class Bass : Instrument
     {
         //set up normal attack note
         //Amp.GetComponent<Renderer>().enabled = false;
-
-        //AttackCoolDown = 0.5f;
         AmpPos = gameObject.transform;
     }
 
