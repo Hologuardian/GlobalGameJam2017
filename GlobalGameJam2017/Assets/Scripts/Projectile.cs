@@ -6,16 +6,14 @@ public class Projectile : MonoBehaviour
 {
 #region Variables
     public bool isLocalOrientation;
-    public Transform player;
-    public Vector3 center;
     private float time;
 
     public AnimationCurve X;
     public AnimationCurve Z;
 
     public float deathTime = 2.0f;
-    public float frequency = 1.0f;
-    public float magnitude = 1.0f;
+    public AnimationCurve frequency;
+    public AnimationCurve magnitude;
 
 
     #endregion
@@ -24,24 +22,23 @@ public class Projectile : MonoBehaviour
     private void Start()
     {
         Destroy(gameObject, deathTime);
-        if (!isLocalOrientation)
-        {
-            center = player.position;
-        }
+        Destroy(transform.parent.gameObject, deathTime);
     }
 	
 
     // Physics update
     private void Update()
     {
-        time += Time.deltaTime * frequency;
+        time += Time.deltaTime * frequency.Evaluate(Time.time);
         if(isLocalOrientation)
         {
-            transform.position = player.position + new Vector3(X.Evaluate(time), 0, Z.Evaluate(time)) * magnitude;
+            transform.position = transform.parent.position 
+                + transform.parent.right * X.Evaluate(time) * magnitude.Evaluate(time) 
+                + transform.parent.forward * Z.Evaluate(time) * magnitude.Evaluate(time);
         }
         else
         {
-            transform.position = center + new Vector3(X.Evaluate(time), 0, Z.Evaluate(time)) * magnitude;
+            transform.position = transform.parent.position + new Vector3(X.Evaluate(time), 0, Z.Evaluate(time)) * magnitude.Evaluate(time);
         }
     }
 

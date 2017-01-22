@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class TestFire : MonoBehaviour
 {
-    public Projectile Note;
+    public GameObject Note;
     public float coolDown;
+    public float velocity;
     private float waitTime;
     // Use this for initialization
     void Start()
     {
-        waitTime = 0;
+        waitTime = coolDown;
     }
 
     // Update is called once per frame
@@ -20,8 +21,9 @@ public class TestFire : MonoBehaviour
         if (waitTime <= 0)
         {
             waitTime += coolDown;
-            Projectile inst = Instantiate(Note, this.transform.position , this.transform.rotation);
-            inst.player = gameObject.transform;
+            GameObject inst = Instantiate(Note, this.transform.position , this.transform.rotation);
+            inst.GetComponent<Rigidbody>().velocity = transform.forward * velocity;
+            Debug.Log(transform.forward);
         }
     }
 }
