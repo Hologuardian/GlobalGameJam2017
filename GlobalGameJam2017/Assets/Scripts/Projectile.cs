@@ -48,8 +48,11 @@ public class Projectile : MonoBehaviour
     // Rigidbody collision detection
     private void OnTriggerEnter(Collider cc)
     {
-        Debug.Log("Collision");
+        //Debug.Log("Collision");
         //Destroy(gameObject);
+        if (cc.gameObject.tag == "player") {
+            cc.GetComponent<TopDownController>().Health -= Damage;
+        }
     }
 
 } // end class Projectile

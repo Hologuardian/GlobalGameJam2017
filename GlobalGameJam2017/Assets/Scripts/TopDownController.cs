@@ -31,6 +31,7 @@ public class TopDownController : MonoBehaviour
     Animator animator;
     // Jump variables
     public bool isOnGround;
+    public bool dead;
 
     KeyCode PlayerInputA;
     KeyCode PlayerInputX;
@@ -94,11 +95,62 @@ public class TopDownController : MonoBehaviour
                 break;
         }
     }
-
-    // Update is called once per frame
-    protected  void Update()
+    void UpdateUI()
     {
+        if (PlayerID == 1)
+        {
+            UIPlayer.UIplayers[UIPlayer.Player.Pink].SetHealth(Health);
+            if (_Instrument.AggroLightCoolDownWait > 0)
+            {
+                UIPlayer.UIplayers[UIPlayer.Player.Pink].ToggleSkill(UIPlayer.Input.rb);
+            }
+            if (_Instrument.AggroHeavyCoolDownWait > 0)
+            {
+                UIPlayer.UIplayers[UIPlayer.Player.Pink].ToggleSkill(UIPlayer.Input.rt);
+            }
+            if (_Instrument.UtilityCoolDownWait > 0)
+            {
+                UIPlayer.UIplayers[UIPlayer.Player.Pink].ToggleSkill(UIPlayer.Input.lt);
+            }
+            if (_Instrument.DefenseCoolDownWait > 0)
+            {
+                UIPlayer.UIplayers[UIPlayer.Player.Pink].ToggleSkill(UIPlayer.Input.lb);
+            }
+            else if (PlayerID == 2)
+            {
+                UIPlayer.UIplayers[UIPlayer.Player.Bub].SetHealth(Health);
+                if (_Instrument.AggroLightCoolDownWait > 0)
+                {
+                    UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.rb);
+                }
+                if (_Instrument.AggroHeavyCoolDownWait > 0)
+                {
+                    UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.rt);
+                }
+                if (_Instrument.UtilityCoolDownWait > 0)
+                {
+                    UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.lt);
+                }
+                if (_Instrument.DefenseCoolDownWait > 0)
+                {
+                    UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.lb);
+                }
+            }
+
+        }
+    }
+    // Update is called once per frame
+    protected void Update()
+    {
+        UpdateUI();
         HandleInput();
+        if (Health > HealthMax) {
+            Health = HealthMax;
+        }
+        if (Health <= 0) {
+            dead = true;
+            this.enabled = false;
+        }
     }
     void keyboardMove() {
         // Establish a temporary movement vector
@@ -119,7 +171,7 @@ public class TopDownController : MonoBehaviour
     void HandleInput()
     {
 
-        if (!usedHeavy)
+        if (!usedHeavy && !dead)
         {
             moveGoal = Vector3.zero;
 
