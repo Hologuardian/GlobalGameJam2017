@@ -8,6 +8,7 @@ public class TestFire2 : MonoBehaviour
     public float coolDown;
     private float waitTime;
     public Vector3 spawnDelta;
+    public float Damage = 1.0f;
     // Use this for initialization
     void Start()
     {
@@ -23,6 +24,7 @@ public class TestFire2 : MonoBehaviour
             waitTime += coolDown;
             GameObject inst = Instantiate(Note, transform.position + spawnDelta, this.transform.rotation);
             inst.transform.parent = this.transform;
+            inst.GetComponent<Projectile>().Damage = Damage;
         }
     }
 }

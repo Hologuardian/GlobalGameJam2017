@@ -8,6 +8,7 @@ public class TestFire : MonoBehaviour
     public float coolDown;
     public float velocity;
     private float waitTime;
+    public float Damage = 1.0f;
     // Use this for initialization
     void Start()
     {
@@ -23,6 +24,7 @@ public class TestFire : MonoBehaviour
             waitTime += coolDown;
             GameObject inst = Instantiate(Note, this.transform.position , this.transform.rotation);
             inst.GetComponent<Rigidbody>().velocity = transform.forward * velocity;
+            inst.GetComponent<Projectile>().Damage = Damage;
             Debug.Log(transform.forward);
         }
     }

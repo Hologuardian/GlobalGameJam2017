@@ -15,6 +15,7 @@ public class Projectile : MonoBehaviour
     public AnimationCurve frequency;
     public AnimationCurve xMagnitude;
     public AnimationCurve zMagnitude;
+    public float Damage = 1.0f;
 
 
     #endregion
