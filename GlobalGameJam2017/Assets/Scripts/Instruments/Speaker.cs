@@ -11,6 +11,7 @@ public class Speaker : MonoBehaviour
     public GameObject deadlyAttack;
     public GameObject deadlyAttack2;
     public Rotate rotator;
+    public BossMaster master;
     public float health = 5.0f;
     public float velocity;
     public float chargeVelocity;
@@ -45,7 +46,10 @@ public class Speaker : MonoBehaviour
     void Update()
     {
         if (health < 0)
+        {
+            master.SpeakerDied();
             Destroy(transform.parent.parent.gameObject);
+        }
         deadlyTime -= Time.deltaTime;
         if (deadlyTime <= 0)
         {

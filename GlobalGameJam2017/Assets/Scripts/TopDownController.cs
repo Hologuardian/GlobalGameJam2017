@@ -11,6 +11,8 @@ public class TopDownController : MonoBehaviour
     private int _playerID;
     public int PlayerID { get { return _playerID; } set { _playerID = value; } }
 
+    public BossMaster master;
+
     [SerializeField]
     private float _health;
     public float Health { get { return _health; } set { _health = value; } }
@@ -149,6 +151,10 @@ public class TopDownController : MonoBehaviour
             Health = HealthMax;
         }
         if (Health <= 0) {
+            if(master)
+            {
+                master.PlayerDied();
+            }
             dead = true;
             this.enabled = false;
             GetComponentsInChildren<SkinnedMeshRenderer>().ToList().ForEach(x => x.enabled = false);
