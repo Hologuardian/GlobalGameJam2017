@@ -14,7 +14,6 @@ public class Amp : MonoBehaviour {
 	}
     public void Dropped(bool _Heal) {
         dropped = true;
-        this.GetComponent<Renderer>().enabled = true;
         Heal = _Heal;
         print(Heal);
     }
