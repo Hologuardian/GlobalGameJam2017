@@ -25,8 +25,7 @@ public class TestFire : MonoBehaviour
             waitTime += coolDown;
             GameObject inst = Instantiate(Note, this.transform.position , this.transform.rotation);
             inst.GetComponent<Rigidbody>().velocity = transform.forward * velocity;
-            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
-            Debug.Log(transform.forward);
+            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);;
         }
     }
 }

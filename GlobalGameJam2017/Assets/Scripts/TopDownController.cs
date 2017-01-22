@@ -4,6 +4,7 @@ using System.Collections;
 
 public class TopDownController : MonoBehaviour
 {
+    
     [SerializeField]
     private int _playerID;
     public int PlayerID { get { return _playerID; } set { _playerID = value; } }
@@ -27,9 +28,9 @@ public class TopDownController : MonoBehaviour
     private Vector3 currentVelocity;
     private Rigidbody body;
 
+    Animator animator;
     // Jump variables
     public bool isOnGround;
-    public bool isTouching;
 
     KeyCode PlayerInputA;
     KeyCode PlayerInputX;
@@ -42,6 +43,8 @@ public class TopDownController : MonoBehaviour
     // Use this for initialization
     protected void Start()
     {
+        animator = GetComponent<Animator>();
+
         body = GetComponent<Rigidbody>();
         isOnGround = true;
         HealthMax = 100;
@@ -114,8 +117,8 @@ public class TopDownController : MonoBehaviour
                 moveGoal.z = Input.GetAxis("L Vertical Controller " + PlayerID);
             }
             Vector3 Pos = transform.position;
-            Pos.z += Input.GetAxis("R Vertical Controller " + PlayerID);
-            Pos.x += Input.GetAxis("R Horizontal Controller " + PlayerID);
+            Pos.z += Input.GetAxis("L Vertical Controller " + PlayerID);
+            Pos.x += Input.GetAxis("L Horizontal Controller " + PlayerID);
            // print(Pos.x);
             Debug.DrawLine(transform.position,  Pos);
 
@@ -141,16 +144,17 @@ public class TopDownController : MonoBehaviour
             moveGoal.z *= Movement.z;
             
             moveGoal.x *= Movement.x;
-            
+
             // Sprinting, if moving forward
             if (Input.GetKey(KeyCode.LeftShift)|| Input.GetKey(PlayerInputL3))
             {
                 if (moveGoal.z > 0)
                     moveGoal.z *= MovementSprintMult;
             }
-
+                
+                animator.SetFloat("Movespeed", moveGoal.magnitude);
             // Then it is just a matter of using the beautiful SmoothDamp method (much like a spring, but unable to go past the goal) to figure out the best way of making the player move naturally
-            body.MovePosition(body.position + moveGoal * Time.deltaTime);//Vector3.SmoothDamp(body.position, body.position + moveGoal, ref currentVelocity, 1));
+            body.MovePosition(Vector3.SmoothDamp(body.position, body.position + moveGoal, ref currentVelocity, 1));
         }
 
         // Action logic
@@ -164,7 +168,8 @@ public class TopDownController : MonoBehaviour
         if (Input.GetKey(PlayerInputY))
         {
             _Instrument.AggroHeavy();
-            print("Y");
+            animator.SetBool("Heavyattack", true);
+           print("Y");
         }
         if (Input.GetKey(PlayerInputA)||Input.GetKey(KeyCode.Space))
         {
@@ -180,6 +185,6 @@ public class TopDownController : MonoBehaviour
 
     void OnCollisionStay(Collision collision)
     {
-        isTouching = true;
+       
     }
 }
