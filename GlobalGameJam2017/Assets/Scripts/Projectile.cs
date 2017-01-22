@@ -46,11 +46,19 @@ public class Projectile : MonoBehaviour
     // Rigidbody collision detection
     private void OnTriggerEnter(Collider cc)
     {
+        if (cc == null || cc.gameObject == null)
+            return;
         //Debug.Log("Collision");
         //Destroy(gameObject);
-        if (cc.gameObject.tag == "Player") {
-            cc.GetComponent<TopDownController>().Health -= Damage;
-            Destroy(this.gameObject);
+        if (cc.gameObject.tag == "Player" && cc.gameObject != owner)
+        {
+            TopDownController controller = cc.gameObject.GetComponent<TopDownController>();
+            Speaker speaker = cc.gameObject.GetComponent<Speaker>();
+            if (controller)
+                controller.Health -= Damage;
+            if (speaker)
+                speaker.health -= Damage;
+            Destroy(this.transform.parent.gameObject);
         }
     }
 

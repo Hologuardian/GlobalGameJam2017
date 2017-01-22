@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 
 public class TopDownController : MonoBehaviour
@@ -53,7 +55,7 @@ public class TopDownController : MonoBehaviour
 
         body = GetComponent<Rigidbody>();
         isOnGround = true;
-        HealthMax = 100;
+        HealthMax = 10;
         Health = HealthMax;
 
         switch (PlayerID) {
@@ -99,7 +101,7 @@ public class TopDownController : MonoBehaviour
     {
         if (PlayerID == 1)
         {
-            UIPlayer.UIplayers[UIPlayer.Player.Pink].SetHealth(Health);
+            UIPlayer.UIplayers[UIPlayer.Player.Pink].SetHealth(Health / HealthMax);
             if (_Instrument.AggroLightCoolDownWait > 0)
             {
                 UIPlayer.UIplayers[UIPlayer.Player.Pink].ToggleSkill(UIPlayer.Input.rb);
@@ -116,27 +118,26 @@ public class TopDownController : MonoBehaviour
             {
                 UIPlayer.UIplayers[UIPlayer.Player.Pink].ToggleSkill(UIPlayer.Input.lb);
             }
-            else if (PlayerID == 2)
+        }
+        else if (PlayerID == 2)
+        {
+            UIPlayer.UIplayers[UIPlayer.Player.Bub].SetHealth(Health / HealthMax);
+            if (_Instrument.AggroLightCoolDownWait > 0)
             {
-                UIPlayer.UIplayers[UIPlayer.Player.Bub].SetHealth(Health);
-                if (_Instrument.AggroLightCoolDownWait > 0)
-                {
-                    UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.rb);
-                }
-                if (_Instrument.AggroHeavyCoolDownWait > 0)
-                {
-                    UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.rt);
-                }
-                if (_Instrument.UtilityCoolDownWait > 0)
-                {
-                    UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.lt);
-                }
-                if (_Instrument.DefenseCoolDownWait > 0)
-                {
-                    UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.lb);
-                }
+                UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.rb);
             }
-
+            if (_Instrument.AggroHeavyCoolDownWait > 0)
+            {
+                UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.rt);
+            }
+            if (_Instrument.UtilityCoolDownWait > 0)
+            {
+                UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.lt);
+            }
+            if (_Instrument.DefenseCoolDownWait > 0)
+            {
+                UIPlayer.UIplayers[UIPlayer.Player.Bub].ToggleSkill(UIPlayer.Input.lb);
+            }
         }
     }
     // Update is called once per frame
@@ -150,6 +151,7 @@ public class TopDownController : MonoBehaviour
         if (Health <= 0) {
             dead = true;
             this.enabled = false;
+            GetComponentsInChildren<SkinnedMeshRenderer>().ToList().ForEach(x => x.enabled = false);
         }
     }
     void keyboardMove() {

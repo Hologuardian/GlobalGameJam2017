@@ -33,12 +33,13 @@ public class Bass : Instrument
             AttackCoolDownWait = AttackCoolDown;
             GameObject inst = new GameObject();
             if (!AmpDropped)
-                inst = Instantiate(Note[0], this.transform.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
+                inst = Instantiate(Note[0], this.transform.position + new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
             else
                 inst = Instantiate(Note[0], AmpPos.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
 
             inst.GetComponent<Rigidbody>().velocity = Direction * velocity;
             inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
+            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.owner = gameObject.transform.parent.gameObject);
         }
     }
     public override void AggroLight(Vector3 Direction)
@@ -48,11 +49,12 @@ public class Bass : Instrument
             AggroLightCoolDownWait = AggroLightCoolDown;
             GameObject inst = new GameObject();
             if (!AmpDropped)
-                inst = Instantiate(Note[1], this.transform.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
+                inst = Instantiate(Note[1], this.transform.position + new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
             else
                 inst = Instantiate(Note[1], AmpPos.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
             inst.GetComponent<Rigidbody>().velocity = Direction * velocity;
             inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
+            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.owner = gameObject.transform.parent.gameObject);
         }
     }
     public override void AggroHeavy(Vector3 Direction)
@@ -62,11 +64,12 @@ public class Bass : Instrument
             AggroHeavyCoolDownWait = AggroHeavyCoolDown;
             GameObject inst = new GameObject();
             if (!AmpDropped)
-                inst = Instantiate(Note[2], this.transform.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
+                inst = Instantiate(Note[2], this.transform.position + new Vector3(0, 0.5f, 0), Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
             else
                 inst = Instantiate(Note[2], AmpPos.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
             inst.GetComponent<Rigidbody>().velocity = Direction * velocity;
             inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
+            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.owner = gameObject.transform.parent.gameObject);
         }
     }
     public override void Utility(Vector3 Direction)
