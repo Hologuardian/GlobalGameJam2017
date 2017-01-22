@@ -21,6 +21,7 @@ public class Projectile : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
+        Physics.IgnoreCollision(GetComponent<Collider>(), owner.GetComponent<Collider>(), true);
         Destroy(gameObject, deathTime);
         Destroy(transform.parent.gameObject, deathTime);
     }

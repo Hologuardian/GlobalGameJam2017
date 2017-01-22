@@ -97,6 +97,7 @@
     <Compile Include="Assets\Scripts\Instruments\Guitar.cs" />
     <Compile Include="Assets\Scripts\Instruments\Guss.cs" />
     <Compile Include="Assets\Scripts\Instruments\Instrument.cs" />
+    <Compile Include="Assets\Scripts\Instruments\ShockWave.cs" />
     <Compile Include="Assets\Scripts\Instruments\Speaker.cs" />
     <Compile Include="Assets\Scripts\Instruments\TestFire.cs" />
     <Compile Include="Assets\Scripts\Instruments\TestFire2.cs" />

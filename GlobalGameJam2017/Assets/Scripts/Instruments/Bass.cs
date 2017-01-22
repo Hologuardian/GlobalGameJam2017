@@ -39,7 +39,7 @@ public class Bass : Instrument
 
             inst.GetComponent<Rigidbody>().velocity = Direction * velocity;
             inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
-            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.owner = gameObject.transform.parent.gameObject);
+            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.owner = gameObject.gameObject);
         }
     }
     public override void AggroLight(Vector3 Direction)
@@ -54,7 +54,7 @@ public class Bass : Instrument
                 inst = Instantiate(Note[1], AmpPos.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
             inst.GetComponent<Rigidbody>().velocity = Direction * velocity;
             inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
-            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.owner = gameObject.transform.parent.gameObject);
+            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.owner = gameObject.gameObject);
         }
     }
     public override void AggroHeavy(Vector3 Direction)
@@ -69,7 +69,7 @@ public class Bass : Instrument
                 inst = Instantiate(Note[2], AmpPos.position, Quaternion.AngleAxis(Mathf.Atan2(Direction.x, Direction.z) * Mathf.Rad2Deg, Vector3.up));
             inst.GetComponent<Rigidbody>().velocity = Direction * velocity;
             inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.Damage = Damage);
-            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.owner = gameObject.transform.parent.gameObject);
+            inst.GetComponentsInChildren<Projectile>().ToList().ForEach(x => x.owner = gameObject.gameObject);
         }
     }
     public override void Utility(Vector3 Direction)
