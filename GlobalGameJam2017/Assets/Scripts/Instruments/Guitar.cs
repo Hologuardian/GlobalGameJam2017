@@ -5,7 +5,7 @@ using System.Linq;
 
 
 public class Guitar : Instrument {
-    public GameObject Amp;
+    public GameObject Amp, droppedAmp;
     public GameObject ShockWave;
     Transform AmpPos;
     public bool AmpDropped;
@@ -72,9 +72,14 @@ public class Guitar : Instrument {
                 //GameObject DroppedAmp = Amp;
                 AmpDropped = true;
                 //DroppedAmp.GetComponent<Amp>().Dropped(true);
-                GameObject amp = Instantiate(Amp, transform.position, transform.rotation) as GameObject;
-                amp.GetComponent<Amp>().Dropped(true);
-                AmpPos = amp.transform;
+                droppedAmp = Instantiate(Amp, transform.position, transform.rotation) as GameObject;
+                droppedAmp.GetComponent<Amp>().Dropped(true);
+                AmpPos = droppedAmp.transform;
+            }
+            else if (AmpDropped) {
+                AmpPos = transform;
+               Destroy(droppedAmp);
+                AmpDropped = false;
             }
         }
     }
