@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-#region Variables
     public bool isLocalOrientation;
     private float time;
 
@@ -17,8 +16,7 @@ public class Projectile : MonoBehaviour
     public AnimationCurve zMagnitude;
     public float Damage = 1.0f;
 
-
-    #endregion
+    public GameObject owner;
 
     // Use this for initialization
     private void Start()
@@ -50,8 +48,9 @@ public class Projectile : MonoBehaviour
     {
         //Debug.Log("Collision");
         //Destroy(gameObject);
-        if (cc.gameObject.tag == "player") {
+        if (cc.gameObject.tag == "Player") {
             cc.GetComponent<TopDownController>().Health -= Damage;
+            Destroy(this.gameObject);
         }
     }
 

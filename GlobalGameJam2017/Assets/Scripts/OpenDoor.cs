@@ -15,8 +15,11 @@ public class OpenDoor : MonoBehaviour {
 		
 	}
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider cc)
     {
-        SceneManager.LoadScene("KaraokeBar");
+        if (cc.gameObject.tag == "Player")
+        {
+            SceneManager.LoadScene("KaraokeBar");
+        }
     }
 }
