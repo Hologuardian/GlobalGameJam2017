@@ -31,6 +31,7 @@ public class TopDownController : MonoBehaviour
     Animator animator;
     // Jump variables
     public bool isOnGround;
+    public bool dead;
 
     KeyCode PlayerInputA;
     KeyCode PlayerInputX;
@@ -146,6 +147,10 @@ public class TopDownController : MonoBehaviour
         if (Health > HealthMax) {
             Health = HealthMax;
         }
+        if (Health <= 0) {
+            dead = true;
+            this.enabled = false;
+        }
     }
     void keyboardMove() {
         // Establish a temporary movement vector
@@ -166,7 +171,7 @@ public class TopDownController : MonoBehaviour
     void HandleInput()
     {
 
-        if (!usedHeavy)
+        if (!usedHeavy && !dead)
         {
             moveGoal = Vector3.zero;
 
