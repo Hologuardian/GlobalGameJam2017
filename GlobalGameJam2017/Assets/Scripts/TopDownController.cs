@@ -264,6 +264,7 @@ public class TopDownController : MonoBehaviour
         {
             animator.SetBool("Heavyattack", false);
             usedHeavy = false;
+            HeavyWait = 0;
         }
         else if (usedHeavy) {
             HeavyWait -= animator.GetCurrentAnimatorStateInfo(0).normalizedTime;

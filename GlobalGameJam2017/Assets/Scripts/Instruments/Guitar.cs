@@ -6,6 +6,7 @@ using System.Linq;
 
 public class Guitar : Instrument {
     public GameObject Amp;
+    public GameObject ShockWave;
     Transform AmpPos;
     public bool AmpDropped;
     
@@ -57,6 +58,9 @@ public class Guitar : Instrument {
         base.AggroHeavy(Direction);
         if (AggroHeavyCoolDownWait <= 0) {
             AggroHeavyCoolDownWait = AggroHeavyCoolDown;
+            GameObject shockWave = Instantiate(ShockWave, transform.position, transform.rotation) as GameObject;
+            shockWave.transform.Rotate(-90 , 0, 0);
+            shockWave.GetComponent<Rigidbody>().velocity = Direction * velocity;
         }
     }
     public override void Utility(Vector3 Direction) {
@@ -71,7 +75,6 @@ public class Guitar : Instrument {
                 GameObject amp = Instantiate(Amp, transform.position, transform.rotation) as GameObject;
                 amp.GetComponent<Amp>().Dropped(true);
                 AmpPos = amp.transform;
-                print(AmpPos);
             }
         }
     }
