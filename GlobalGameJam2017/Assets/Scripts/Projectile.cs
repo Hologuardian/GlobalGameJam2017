@@ -13,7 +13,8 @@ public class Projectile : MonoBehaviour
 
     public float deathTime = 2.0f;
     public AnimationCurve frequency;
-    public AnimationCurve magnitude;
+    public AnimationCurve xMagnitude;
+    public AnimationCurve zMagnitude;
 
 
     #endregion
@@ -33,12 +34,12 @@ public class Projectile : MonoBehaviour
         if(isLocalOrientation)
         {
             transform.position = transform.parent.position 
-                + transform.parent.right * X.Evaluate(time) * magnitude.Evaluate(time) 
-                + transform.parent.forward * Z.Evaluate(time) * magnitude.Evaluate(time);
+                + transform.parent.right * X.Evaluate(time) * xMagnitude.Evaluate(time) 
+                + transform.parent.forward * Z.Evaluate(time) * zMagnitude.Evaluate(time);
         }
         else
         {
-            transform.position = transform.parent.position + new Vector3(X.Evaluate(time), 0, Z.Evaluate(time)) * magnitude.Evaluate(time);
+            transform.position = transform.parent.position + new Vector3(X.Evaluate(time) * xMagnitude.Evaluate(time), 0, Z.Evaluate(time) * zMagnitude.Evaluate(time));
         }
     }
 
