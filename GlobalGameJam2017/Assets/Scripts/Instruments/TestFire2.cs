@@ -21,7 +21,7 @@ public class TestFire2 : MonoBehaviour
         if (waitTime <= 0)
         {
             waitTime += coolDown;
-            GameObject inst = Instantiate(Note, Vector3.zero, this.transform.rotation);
+            GameObject inst = Instantiate(Note, transform.position + spawnDelta, this.transform.rotation);
             inst.transform.parent = this.transform;
         }
     }
