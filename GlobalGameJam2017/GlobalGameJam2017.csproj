@@ -84,6 +84,7 @@
     <Compile Include="Assets\Scripts\Instruments\Bass.cs" />
     <Compile Include="Assets\Scripts\Instruments\Guitar.cs" />
     <Compile Include="Assets\Scripts\Instruments\Instrument.cs" />
+    <Compile Include="Assets\Scripts\Instruments\TestFire.cs" />
     <Compile Include="Assets\Scripts\Projectile.cs" />
     <Compile Include="Assets\Scripts\Skill.cs" />
     <Compile Include="Assets\Scripts\ThirdPersonController.cs" />
