@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestFire : MonoBehaviour
+public class TestFire2 : MonoBehaviour
 {
     public Projectile Note;
     public float coolDown;
     private float waitTime;
+    public Vector3 spawnDelta;
     // Use this for initialization
     void Start()
     {
@@ -20,7 +21,7 @@ public class TestFire : MonoBehaviour
         if (waitTime <= 0)
         {
             waitTime += coolDown;
-            Projectile inst = Instantiate(Note, this.transform.position , this.transform.rotation);
+            Projectile inst = Instantiate(Note, this.transform.position + spawnDelta, this.transform.rotation);
             inst.player = gameObject.transform;
         }
     }
