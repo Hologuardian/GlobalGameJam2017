@@ -13,8 +13,7 @@ public class Guitar : Instrument {
     void Start () {
         //set up normal attack note
         //Amp.GetComponent<Renderer>().enabled = false;
-      
-        //AttackCoolDown = 0.5f;
+     
         AmpPos = gameObject.transform;
     }
 
