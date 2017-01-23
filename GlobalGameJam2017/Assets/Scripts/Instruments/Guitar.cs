@@ -58,7 +58,7 @@ public class Guitar : Instrument {
         base.AggroHeavy(Direction);
         if (AggroHeavyCoolDownWait <= 0) {
             AggroHeavyCoolDownWait = AggroHeavyCoolDown;
-            GameObject shockWave = Instantiate(ShockWave, transform.position, transform.rotation) as GameObject;
+            GameObject shockWave = Instantiate(ShockWave, transform.position + new Vector3(0, 0.5f, 0), transform.rotation) as GameObject;
             shockWave.transform.Rotate(-90 , 0, 0);
             shockWave.GetComponent<Rigidbody>().velocity = Direction * velocity;
         }
